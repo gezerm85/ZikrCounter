@@ -1,17 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { AdMobBanner } from "expo-ads-admob";
 
 const AdBanner = () => {
   return (
     <View style={styles.container}>
-      <AdMobBanner
-        bannerSize="fullBanner"
-        adUnitID="ca-app-pub-9856483340336068~6907821252"
-        koyun
-        servePersonalizedAds
-        onDidFailToReceiveAdWithError={(error) => console.error(error)}
-      />
+      <Text>asfaf</Text>
     </View>
   );
 };
