@@ -12,7 +12,6 @@ import SettingsModal from "../../components/SettingsModal/SettingsModal";
 import { useNavigation } from "@react-navigation/native";
 import { setTheme } from "../../utils/Theme/Theme";
 import styles from "./HomeScreen.style";
-import AdBanner from "../../components/AdBanner/AdBanner";
 
 const HomeScreen = () => {
   const [isSettingsModal, setIsSettingsModal] = useState(false);
@@ -101,7 +100,7 @@ const HomeScreen = () => {
         <ZikirCounter />
       </View>
       <View style={styles.bottomContainer}>
-        <AdBanner />
+        <Text>ASFAF</Text>
       </View>
       {isSettingsModal && (
         <View style={styles.modalOverlay}>
