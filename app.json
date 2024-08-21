@@ -30,7 +30,8 @@
         {
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
         }
-      ]
+      ],
+      "react-native-google-mobile-ads"
     ]
   }
 }

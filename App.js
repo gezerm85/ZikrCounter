@@ -4,7 +4,6 @@ import Navigation from "./src/router/Navigation/Navigation";
 import { Provider } from "react-redux";
 import { useAppFonts } from "./src/utils/Fonts/Fonts";
 import * as SplashScreen from "expo-splash-screen";
-import { PaperProvider } from "react-native-paper";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,9 +21,7 @@ export default function App() {
   }
   return (
     <Provider store={store}>
-      <PaperProvider>
-        <Navigation />
-      </PaperProvider>
+      <Navigation />
     </Provider>
   );
 }
