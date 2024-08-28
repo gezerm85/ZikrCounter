@@ -12,7 +12,6 @@ export default styles = StyleSheet.create({
   },
   box: {
     width: "100%",
-
     padding: 16,
     flexDirection: "row",
     alignItems: "center",
@@ -21,11 +20,14 @@ export default styles = StyleSheet.create({
     gap: 8,
   },
   counter: {
-    fontWeight: "bold",
+    fontWeight: "700",
     fontSize: 20,
-    color: "#1a1a1a",
+    color: "#ffffff",
     textAlignVertical: "center",
     fontFamily: "OpenSans",
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 50000,
   },
   bodyContainer: {
     flex: 1,

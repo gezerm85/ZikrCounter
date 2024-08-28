@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 export default styles = StyleSheet.create({
   container: {
@@ -12,7 +12,7 @@ export default styles = StyleSheet.create({
     width: width,
     height: "15%",
     flexDirection: "row",
-    gap: 16,
+    gap: 30,
     padding: 16,
     alignItems: "center",
     justifyContent: "center",
@@ -31,8 +31,7 @@ export default styles = StyleSheet.create({
   },
   btnBox: {
     backgroundColor: "#E7F0DC",
-    paddingVertical: 12,
-    paddingHorizontal: 22,
+    padding: 14,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
@@ -50,5 +49,10 @@ export default styles = StyleSheet.create({
     bottom: 0,
     justifyContent: "center",
     alignItems: "center",
+  },
+  img: {
+    width: 30,
+    height: 30,
+    resizeMode: "contain",
   },
 });

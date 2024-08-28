@@ -5,11 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { reset, setFavorite } from "../../redux/CounterSlice";
 import moment from "moment";
 import styles from "./CustomModal.style";
+import { getLocales } from "expo-localization";
+import { useTranslation } from "react-i18next";
 
 const CustomModal = ({ isVisible, onClose }) => {
+  const { t } = useTranslation();
+
   const { value, currentIndex } = useSelector((e) => e.counter);
 
-  moment.locale("tr");
+  const date = getLocales()[0].languageTag.split("-")[0].toString() || "tr";
+
+  moment.locale(date);
 
   const now = moment().format("DD MMMM dddd");
 
@@ -41,9 +47,9 @@ const CustomModal = ({ isVisible, onClose }) => {
     <View style={styles.container}>
       <Modal isVisible={isVisible} onBackdropPress={onClose}>
         <View style={styles.bodyContainer}>
-          <Text style={styles.title}>Listeye Kaydet</Text>
+          <Text style={styles.title}>{t("SAVE_LIST")}</Text>
           <TextInput
-            placeholder="Lütfen bir isim belirleyin"
+            placeholder={t("CHOOSE_NAME")}
             value={fav.fav}
             onChangeText={(text) => setFav({ ...fav, fav: text })}
             style={styles.input}
@@ -51,10 +57,10 @@ const CustomModal = ({ isVisible, onClose }) => {
 
           <View style={styles.btnBox}>
             <Pressable onPress={onClose} style={styles.button}>
-              <Text>VAZGEÇ</Text>
+              <Text>{t("CANCEL")}</Text>
             </Pressable>
             <Pressable onPress={handleOnPress} style={styles.button}>
-              <Text>KAYDET</Text>
+              <Text>{t("SAVE")}</Text>
             </Pressable>
           </View>
         </View>

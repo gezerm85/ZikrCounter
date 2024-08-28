@@ -15,6 +15,8 @@ export default styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 15,
     fontFamily: "OpenSans",
+    width: "100%",
+    textAlign: "center",
   },
   bodyContainer: {
     height: "85%",
@@ -62,7 +64,7 @@ export default styles = StyleSheet.create({
   },
   screen: {
     backgroundColor: "#C3C3C3",
-    height: 70,
+    height: "80%",
     width: "70%",
     borderRadius: 16,
     alignItems: "flex-end",
@@ -71,7 +73,6 @@ export default styles = StyleSheet.create({
   text: {
     color: "#000",
     height: "100%",
-    fontSize: 50,
     fontFamily: "digital",
     textAlignVertical: "center",
     marginRight: 6,

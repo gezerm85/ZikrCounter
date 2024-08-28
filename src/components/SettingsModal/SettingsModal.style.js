@@ -35,4 +35,9 @@ export default styles = StyleSheet.create({
   button: {
     padding: 10,
   },
+  fontContainer: {
+    flexDirection: "row",
+    width: "100%",
+    gap: 16,
+  },
 });

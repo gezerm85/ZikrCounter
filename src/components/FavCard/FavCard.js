@@ -6,12 +6,17 @@ import { removeFavorite } from "../../redux/CounterSlice";
 import { setTheme } from "../../utils/Theme/Theme";
 import styles from "./FavCard.style";
 
-const FavCard = ({ item }) => {
+const FavCard = ({ item, handleButtonClick }) => {
   const { currentIndex } = useSelector((state) => state.counter);
+
+  const handleOnPress = (value) => {
+    handleButtonClick(value);
+  };
 
   const dispatch = useDispatch();
 
   const removeOnPress = () => {
+    handleOnPress("button1");
     dispatch(removeFavorite(item.id));
   };
   return (
@@ -28,7 +33,14 @@ const FavCard = ({ item }) => {
             <Text style={styles.textDate}>{item.date}</Text>
           </View>
         </View>
-        <Text style={styles.counter}>{item.counter}</Text>
+        <Text
+          style={[
+            styles.counter,
+            { backgroundColor: setTheme[currentIndex].bgColor },
+          ]}
+        >
+          {item.counter}
+        </Text>
         <TouchableOpacity onPress={removeOnPress} style={styles.removeBox}>
           <MaterialIcons name="delete" size={24} color="#1a1a1a" />
         </TouchableOpacity>

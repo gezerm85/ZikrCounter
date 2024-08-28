@@ -6,6 +6,7 @@ import {
   fetchFavorites,
   fetchCurrentIndex,
   fetchVibrationEnabled,
+  fetchFontSize,
 } from "../../redux/CounterSlice";
 import MainStack from "../MainStack/MainStack";
 
@@ -17,6 +18,7 @@ const Navigation = () => {
     dispatch(fetchFavorites());
     dispatch(fetchCurrentIndex());
     dispatch(fetchVibrationEnabled());
+    dispatch(fetchFontSize());
   }, [dispatch]);
 
   return (

@@ -14,9 +14,16 @@ import CustomButton from "../CustomButton/CustomButton";
 import CustomModal from "../CustomModal/CustomModal";
 import { setTheme } from "../../utils/Theme/Theme";
 import styles from "./ZikirCounter.style";
+import { useTranslation } from "react-i18next";
 
-const ZikirCounterSkeleton = () => {
-  const { value, vibrationEnabled, currentIndex } = useSelector(
+const ZikirCounterSkeleton = ({ onButtonClick }) => {
+  const { t } = useTranslation();
+
+  const handleButtonPress = (value) => {
+    onButtonClick(value);
+  };
+
+  const { value, vibrationEnabled, currentIndex, fontSize } = useSelector(
     (state) => state.counter
   );
 
@@ -25,9 +32,12 @@ const ZikirCounterSkeleton = () => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const handleSavePress = () => {
-    setModalVisible(!isModalVisible);
-    if (vibrationEnabled == true) {
-      Vibration.vibrate(25);
+    handleButtonPress("button1");
+    if (value !== 0) {
+      setModalVisible(!isModalVisible);
+      if (vibrationEnabled == true) {
+        Vibration.vibrate(25);
+      }
     }
   };
 
@@ -56,6 +66,7 @@ const ZikirCounterSkeleton = () => {
   }, [dispatch]);
 
   const handleOnPress = async () => {
+    handleButtonPress("button4");
     if (vibrationEnabled) {
       Vibration.vibrate(25);
     }
@@ -74,17 +85,21 @@ const ZikirCounterSkeleton = () => {
   };
 
   const handleResetPress = () => {
+    handleButtonPress("button1");
+    if (vibrationEnabled) {
+      Vibration.vibrate(25);
+    }
     if (value !== 0) {
       Alert.alert(
-        "Sayacı Sıfırla",
-        "Sayacı sıfırlamak istediğinize emin misiniz?",
+        t("RESET_COUNTER"),
+        t("CONFIRM_RESET"),
         [
           {
-            text: "Evet",
+            text: t("YES"),
             onPress: resetPress,
           },
           {
-            text: "Hayır",
+            text: t("NO"),
             onPress: () => null,
             style: "cancel",
           },
@@ -103,16 +118,16 @@ const ZikirCounterSkeleton = () => {
       <View style={styles.bodyContainer}>
         <View style={styles.screenContainer}>
           <View style={styles.screen}>
-            <Text style={styles.text}>{value}</Text>
+            <Text style={[styles.text, { fontSize: fontSize }]}>{value}</Text>
           </View>
         </View>
         <View style={styles.innerContainer}>
           <View style={styles.btnBox}>
-            <Text style={styles.title}>KAYDET</Text>
+            <Text style={styles.title}>{t("SAVE")}</Text>
             <Pressable onPress={handleSavePress} style={styles.smallCircle} />
           </View>
           <View style={styles.btnBox}>
-            <Text style={styles.title}>SIFIRLA</Text>
+            <Text style={styles.title}>{t("RESET")}</Text>
             <Pressable onPress={handleResetPress} style={styles.smallCircle} />
           </View>
         </View>

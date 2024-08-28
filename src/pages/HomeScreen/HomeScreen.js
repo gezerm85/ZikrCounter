@@ -1,20 +1,45 @@
-import { Pressable, Text, View, Vibration, StatusBar } from "react-native";
+import { Pressable, View, Vibration, StatusBar, Image } from "react-native";
 import React, { useState } from "react";
 import ZikirCounter from "../../components/ZikirCounter/ZikirCounter";
 import { useSelector, useDispatch } from "react-redux";
 import * as Speech from "expo-speech";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { changeGradientColor } from "../../redux/CounterSlice";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import SettingsModal from "../../components/SettingsModal/SettingsModal";
 import { useNavigation } from "@react-navigation/native";
 import { setTheme } from "../../utils/Theme/Theme";
 import styles from "./HomeScreen.style";
+import AdBanner from "../../components/AdBanner/AdBanner";
+import InterstitialAd from "../../components/InterstitialAd/InterstitialAd";
+import { img } from "../../utils/img/img";
 
 const HomeScreen = () => {
   const [isSettingsModal, setIsSettingsModal] = useState(false);
+  const [clickCounts, setClickCounts] = useState({
+    button: 0,
+    button1: 0,
+    button2: 0,
+    button3: 0,
+    button4: 0,
+  });
+
+  const thresholds = {
+    button: 5,
+    button1: 10,
+    button2: 15,
+    button3: 25,
+    button4: 100,
+  };
+
+  const handleButtonClick = (buttonKey) => {
+    setClickCounts((prevCounts) => {
+      const newCount = prevCounts[buttonKey] + 1;
+      return { ...prevCounts, [buttonKey]: newCount };
+    });
+  };
+
+  const resetClickCount = (buttonKey) => {
+    setClickCounts((prevCounts) => ({ ...prevCounts, [buttonKey]: 0 }));
+  };
 
   const dispatch = useDispatch();
 
@@ -32,6 +57,7 @@ const HomeScreen = () => {
   };
 
   const OnPress = () => {
+    handleButtonClick("button1");
     setIsSettingsModal(!isSettingsModal);
     if (vibrationEnabled == true) {
       Vibration.vibrate(25);
@@ -39,6 +65,7 @@ const HomeScreen = () => {
   };
 
   const speakNumber = () => {
+    handleButtonClick("button1");
     if (vibrationEnabled == true) {
       Vibration.vibrate(25);
     }
@@ -47,8 +74,21 @@ const HomeScreen = () => {
   };
 
   const handleChangeColor = () => {
+    handleButtonClick("button");
     dispatch(changeGradientColor());
+    if (vibrationEnabled == true) {
+      Vibration.vibrate(25);
+    }
   };
+
+  function handleNavigate() {
+    handleButtonClick("button2");
+    nav.navigate("FavoriteScreen");
+    if (vibrationEnabled == true) {
+      Vibration.vibrate(25);
+    }
+  }
+
   return (
     <View
       style={[
@@ -66,7 +106,7 @@ const HomeScreen = () => {
           ]}
           onPress={OnPress}
         >
-          <MaterialIcons name="settings" size={24} color="#000" />
+          <Image style={styles.img} source={img.Settings} />
         </Pressable>
         <Pressable
           style={[
@@ -75,7 +115,7 @@ const HomeScreen = () => {
           ]}
           onPress={handleChangeColor}
         >
-          <MaterialCommunityIcons name="format-paint" size={24} color="#000" />
+          <Image style={styles.img} source={img.Palette} />
         </Pressable>
         <Pressable
           style={[
@@ -84,23 +124,23 @@ const HomeScreen = () => {
           ]}
           onPress={speakNumber}
         >
-          <AntDesign name="sound" size={24} color="#000" />
+          <Image style={styles.img} source={img.Sound} />
         </Pressable>
         <Pressable
           style={[
             styles.btnBox,
             { backgroundColor: setTheme[currentIndex].cardColor },
           ]}
-          onPress={() => nav.navigate("FavoriteScreen")}
+          onPress={handleNavigate}
         >
-          <FontAwesome5 name="quran" size={24} color="black" />
+          <Image style={styles.img} source={img.Book} />
         </Pressable>
       </View>
       <View style={styles.bodyContainer}>
-        <ZikirCounter />
+        <ZikirCounter onButtonClick={(value) => handleButtonClick(value)} />
       </View>
       <View style={styles.bottomContainer}>
-        <Text>ASFAF</Text>
+        <AdBanner />
       </View>
       {isSettingsModal && (
         <View style={styles.modalOverlay}>
@@ -110,6 +150,14 @@ const HomeScreen = () => {
           />
         </View>
       )}
+      {Object.keys(clickCounts).map((buttonKey) => (
+        <InterstitialAd
+          key={buttonKey}
+          clickCount={clickCounts[buttonKey]}
+          onAdClosed={() => resetClickCount(buttonKey)}
+          adCouner={thresholds[buttonKey]}
+        />
+      ))}
     </View>
   );
 };

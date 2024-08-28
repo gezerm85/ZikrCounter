@@ -36,6 +36,14 @@ export const fetchVibrationEnabled = createAsyncThunk(
     return data;
   }
 );
+export const fetchFontSize = createAsyncThunk(
+  "FontSize/fetchFontSize",
+  async () => {
+    const response = await AsyncStorage.getItem("fontSize");
+    const data = response ? JSON.parse(response) : 72;
+    return data;
+  }
+);
 
 const initialState = {
   value: 0,
@@ -44,6 +52,7 @@ const initialState = {
   error: null,
   vibrationEnabled: true,
   currentIndex: 0,
+  fontSize: 72,
 };
 
 export const counterSlice = createSlice({
@@ -79,6 +88,10 @@ export const counterSlice = createSlice({
       state.currentIndex = (state.currentIndex + 1) % setTheme.length;
       AsyncStorage.setItem("currentIndex", JSON.stringify(state.currentIndex));
     },
+    setFontSize: (state, action) => {
+      state.fontSize = action.payload;
+      AsyncStorage.setItem("fontSize", JSON.stringify(state.fontSize));
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -109,6 +122,9 @@ export const counterSlice = createSlice({
       })
       .addCase(fetchVibrationEnabled.fulfilled, (state, action) => {
         state.vibrationEnabled = action.payload;
+      })
+      .addCase(fetchFontSize.fulfilled, (state, action) => {
+        state.fontSize = action.payload;
       });
   },
 });
@@ -120,6 +136,7 @@ export const {
   removeFavorite,
   setVibrationEnabled,
   changeGradientColor,
+  setFontSize,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;

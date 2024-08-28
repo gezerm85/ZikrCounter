@@ -4,6 +4,7 @@ import Navigation from "./src/router/Navigation/Navigation";
 import { Provider } from "react-redux";
 import { useAppFonts } from "./src/utils/Fonts/Fonts";
 import * as SplashScreen from "expo-splash-screen";
+import "./src/i18n/i18n";
 
 SplashScreen.preventAutoHideAsync();
 
