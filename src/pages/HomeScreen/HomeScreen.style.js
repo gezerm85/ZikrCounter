@@ -31,7 +31,7 @@ export default styles = StyleSheet.create({
   },
   btnBox: {
     backgroundColor: "#E7F0DC",
-    padding: 14,
+    padding: 12,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
@@ -51,8 +51,8 @@ export default styles = StyleSheet.create({
     alignItems: "center",
   },
   img: {
-    width: 30,
-    height: 30,
+    width: 35,
+    height: 35,
     resizeMode: "contain",
   },
 });

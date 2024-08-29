@@ -64,9 +64,7 @@ const FavoriteScreen = () => {
         )}
       </View>
 
-      <View style={styles.bottomContainer}>
-        <AdBanner />
-      </View>
+      <View style={styles.bottomContainer}>{/* <AdBanner /> */}</View>
 
       {Object.keys(clickCounts).map((buttonKey) => (
         <InterstitialAd

@@ -48,6 +48,7 @@ const HomeScreen = () => {
   const { value, vibrationEnabled, currentIndex } = useSelector(
     (state) => state.counter
   );
+  console.log(currentIndex);
 
   const SettingsModalToggle = () => {
     setIsSettingsModal(!isSettingsModal);
@@ -115,7 +116,7 @@ const HomeScreen = () => {
           ]}
           onPress={handleChangeColor}
         >
-          <Image style={styles.img} source={img.Palette} />
+          <Image style={styles.img} source={img.Paint} />
         </Pressable>
         <Pressable
           style={[
@@ -139,9 +140,7 @@ const HomeScreen = () => {
       <View style={styles.bodyContainer}>
         <ZikirCounter onButtonClick={(value) => handleButtonClick(value)} />
       </View>
-      <View style={styles.bottomContainer}>
-        <AdBanner />
-      </View>
+      <View style={styles.bottomContainer}>{/* <AdBanner /> */}</View>
       {isSettingsModal && (
         <View style={styles.modalOverlay}>
           <SettingsModal
