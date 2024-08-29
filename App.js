@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { useAppFonts } from "./src/utils/Fonts/Fonts";
 import * as SplashScreen from "expo-splash-screen";
 import "./src/i18n/i18n";
+import { PaperProvider } from "react-native-paper";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,7 +23,9 @@ export default function App() {
   }
   return (
     <Provider store={store}>
-      <Navigation />
+      <PaperProvider>
+        <Navigation />
+      </PaperProvider>
     </Provider>
   );
 }

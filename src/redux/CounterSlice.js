@@ -71,6 +71,19 @@ export const counterSlice = createSlice({
       state.favorite.push(action.payload);
       AsyncStorage.setItem("favorites", JSON.stringify(state.favorite));
     },
+    updateFavorite: (state, action) => {
+      const { id, fav, counter, date } = action.payload;
+      const index = state.favorite.findIndex((item) => item.id === id);
+      if (index !== -1) {
+        state.favorite[index] = {
+          ...state.favorite[index],
+          fav,
+          counter,
+          date,
+        };
+      }
+      AsyncStorage.setItem("favorites", JSON.stringify(state.favorite));
+    },
     removeFavorite: (state, action) => {
       state.favorite = state.favorite.filter(
         (item) => item.id !== action.payload
@@ -137,6 +150,7 @@ export const {
   setVibrationEnabled,
   changeGradientColor,
   setFontSize,
+  updateFavorite,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;

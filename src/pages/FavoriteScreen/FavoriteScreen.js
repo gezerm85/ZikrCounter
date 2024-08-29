@@ -1,4 +1,4 @@
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Text, View, Pressable } from "react-native";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import FavCard from "../../components/FavCard/FavCard";
@@ -7,6 +7,8 @@ import { setTheme } from "../../utils/Theme/Theme";
 import styles from "./FavoriteScreen.style";
 import InterstitialAd from "../../components/InterstitialAd/InterstitialAd";
 import { useTranslation } from "react-i18next";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import AdBanner from "../../components/AdBanner/AdBanner";
 
 const FavoriteScreen = () => {
   const { t } = useTranslation();
@@ -45,20 +47,26 @@ const FavoriteScreen = () => {
         { backgroundColor: setTheme[currentIndex].bgColor },
       ]}
     >
-      {favorite.length == 0 ? (
-        <Text style={styles.title}>{t("NO_DHIKR")}</Text>
-      ) : (
-        <FlatList
-          data={favorite}
-          renderItem={({ item }) => (
-            <FavCard
-              item={item}
-              handleButtonClick={(value) => handleButtonClick(value)}
-            />
-          )}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      )}
+      <View style={styles.bodyContainer}>
+        {favorite.length == 0 ? (
+          <Text style={styles.title}>{t("NO_DHIKR")}</Text>
+        ) : (
+          <FlatList
+            data={favorite}
+            renderItem={({ item }) => (
+              <FavCard
+                item={item}
+                handleButtonClick={(value) => handleButtonClick(value)}
+              />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        )}
+      </View>
+
+      <View style={styles.bottomContainer}>
+        <AdBanner />
+      </View>
 
       {Object.keys(clickCounts).map((buttonKey) => (
         <InterstitialAd

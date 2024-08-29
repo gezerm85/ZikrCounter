@@ -1,17 +1,17 @@
-import { Text, View, TextInput, Pressable } from "react-native";
-import React, { useState } from "react";
+import { Text, View, TextInput, Pressable, Vibration } from "react-native";
+import React, { useState, useEffect } from "react";
 import Modal from "react-native-modal";
 import { useDispatch, useSelector } from "react-redux";
-import { reset, setFavorite } from "../../redux/CounterSlice";
+import { reset, setFavorite, updateFavorite } from "../../redux/CounterSlice";
 import moment from "moment";
-import styles from "./CustomModal.style";
+import styles from "./EditModal.style";
 import { getLocales } from "expo-localization";
 import { useTranslation } from "react-i18next";
 
-const CustomModal = ({ isVisible, onClose }) => {
+const EditModal = ({ isVisible, onClose, selectedItem }) => {
   const { t } = useTranslation();
 
-  const { value } = useSelector((e) => e.counter);
+  const { value, vibrationEnabled } = useSelector((e) => e.counter);
 
   const date = getLocales()[0].languageTag.split("-")[0].toString() || "tr";
 
@@ -20,26 +20,36 @@ const CustomModal = ({ isVisible, onClose }) => {
   const now = moment().format("DD MMMM dddd");
 
   const [fav, setFav] = useState({
-    id: Math.floor(Math.random() * 9999999999),
-    counter: value,
-    fav: "",
+    id: selectedItem ? selectedItem.id : Math.floor(Math.random() * 9999999999),
+    counter: selectedItem ? selectedItem.counter : value,
+    fav: selectedItem ? selectedItem.fav : "",
     date: now,
   });
 
   const dispatch = useDispatch();
 
-  const handleOnPress = () => {
-    if (value !== 0) {
-      dispatch(setFavorite(fav));
+  useEffect(() => {
+    if (selectedItem) {
       setFav({
-        id: Math.floor(Math.random() * 9999999999),
-        counter: value,
-        fav: "",
+        id: selectedItem.id,
+        counter: selectedItem.counter,
+        fav: selectedItem.fav,
+        date: selectedItem.date,
       });
-      dispatch(reset());
-      onClose();
+    }
+  }, [selectedItem]);
+
+  const handleOnPress = () => {
+    if (value !== 0 || selectedItem) {
+      if (selectedItem) {
+        dispatch(updateFavorite(fav));
+        onClose();
+      }
     } else {
       onClose();
+    }
+    if (vibrationEnabled == true) {
+      Vibration.vibrate(25);
     }
   };
 
@@ -47,7 +57,7 @@ const CustomModal = ({ isVisible, onClose }) => {
     <View style={styles.container}>
       <Modal isVisible={isVisible} onBackdropPress={onClose}>
         <View style={styles.bodyContainer}>
-          <Text style={styles.title}>{t("SAVE_LIST")}</Text>
+          <Text style={styles.title}>{t("EDIT")}</Text>
           <TextInput
             placeholder={t("CHOOSE_NAME")}
             value={fav.fav}
@@ -69,4 +79,4 @@ const CustomModal = ({ isVisible, onClose }) => {
   );
 };
 
-export default CustomModal;
+export default EditModal;

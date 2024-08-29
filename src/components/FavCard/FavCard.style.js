@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 export default styles = StyleSheet.create({
   container: {
+    position: "relative",
     width: "100%",
     flexDirection: "row",
     borderRadius: 8,
@@ -32,10 +33,14 @@ export default styles = StyleSheet.create({
   bodyContainer: {
     flex: 1,
     flexDirection: "row",
+    alignItems: "center",
     gap: 6,
   },
-  innerContainer: {},
-  removeBox: {},
+  menuBox: {},
+  menu: {
+    width: 30,
+    height: 30,
+  },
   textFav: {
     color: "#1a1a1a",
     fontWeight: "900",
@@ -47,5 +52,19 @@ export default styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: 14,
     fontFamily: "OpenSans",
+  },
+  menuContent: {
+    top: 35,
+    right: 16,
+    borderRadius: 8,
+  },
+  modalOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
