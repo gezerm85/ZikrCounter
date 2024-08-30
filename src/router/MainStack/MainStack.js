@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { AppState } from "react-native";
+import { AppState, Alert } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../../pages/HomeScreen/HomeScreen";
 import FavoriteScreen from "../../pages/FavoriteScreen/FavoriteScreen";
@@ -25,13 +25,20 @@ const MainStack = () => {
       if (existingStatus !== "granted") {
         const { status } = await Notifications.requestPermissionsAsync();
         if (status !== "granted") {
-          alert("Notification permission denied!");
+          Alert.alert(
+            t("PERMISSION_DENIED_TITLE"),
+            t("PERMISSION_DENIED_MESSAGE")
+          );
           return;
         }
       }
     };
 
     managePermissions();
+
+    const cancelPreviousNotifications = async () => {
+      await Notifications.cancelAllScheduledNotificationsAsync();
+    };
 
     const appStateSubscription = AppState.addEventListener(
       "change",
@@ -52,13 +59,14 @@ const MainStack = () => {
         }
       });
 
+    cancelPreviousNotifications();
     scheduleDailyNotifications();
 
     return () => {
       appStateSubscription.remove();
       notificationResponseSubscription.remove();
     };
-  }, [value]);
+  }, [value, navigation, t]);
 
   const sendNotification = async () => {
     if (value === 0) return;
