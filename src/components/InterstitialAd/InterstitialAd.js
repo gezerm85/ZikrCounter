@@ -5,9 +5,7 @@ import {
   TestIds,
 } from "react-native-google-mobile-ads";
 
-const adUnitId = __DEV__
-  ? TestIds.INTERSTITIAL
-  : "ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy";
+const adUnitId = "ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy";
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
@@ -28,12 +26,12 @@ const InterstitialAdComponent = ({ clickCount, onAdClosed, adCouner }) => {
       AdEventType.CLOSED,
       () => {
         setLoaded(false);
-        interstitialAd.load(); // Reklam kapatıldıktan sonra yeni reklam yükle
-        onAdClosed(); // Reklam kapatıldığında tıklama sayacını sıfırla
+        interstitialAd.load(); 
+        onAdClosed(); 
       }
     );
 
-    interstitialAd.load(); // Reklamı yüklemeye başla
+    interstitialAd.load(); 
 
     return () => {
       unsubscribeLoaded();

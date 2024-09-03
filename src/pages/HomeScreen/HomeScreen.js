@@ -48,7 +48,6 @@ const HomeScreen = () => {
   const { value, vibrationEnabled, currentIndex } = useSelector(
     (state) => state.counter
   );
-  console.log(currentIndex);
 
   const SettingsModalToggle = () => {
     setIsSettingsModal(!isSettingsModal);
@@ -140,7 +139,9 @@ const HomeScreen = () => {
       <View style={styles.bodyContainer}>
         <ZikirCounter onButtonClick={(value) => handleButtonClick(value)} />
       </View>
-      <View style={styles.bottomContainer}>{/* <AdBanner /> */}</View>
+      <View style={styles.bottomContainer}>
+        <AdBanner />
+      </View>
       {isSettingsModal && (
         <View style={styles.modalOverlay}>
           <SettingsModal

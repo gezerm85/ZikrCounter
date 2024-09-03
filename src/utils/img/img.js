@@ -3,6 +3,7 @@ import Paint from "../../assets/images/Paint.png";
 import Sound from "../../assets/images/Sound.png";
 import Book from "../../assets/images/Book.png";
 import menu from "../../assets/images/menu.png";
+import leftArrow from '../../assets/images/leftArrow.png'
 
 export const img = {
   Settings,
@@ -10,4 +11,5 @@ export const img = {
   Sound,
   Book,
   menu,
+  leftArrow,
 };

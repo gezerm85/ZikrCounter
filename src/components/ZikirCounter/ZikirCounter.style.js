@@ -50,6 +50,10 @@ export default styles = StyleSheet.create({
     justifyContent: "center",
     gap: 6,
   },
+  btnText:{
+    backgroundColor: 'red',
+    fontSize: 22
+  },
   bigCircle: {
     height: 155,
     width: 155,

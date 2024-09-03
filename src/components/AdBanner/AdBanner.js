@@ -7,9 +7,7 @@ import {
 } from "react-native-google-mobile-ads";
 
 const AdBanner = () => {
-  const adUnitId = __DEV__
-    ? TestIds.ADAPTIVE_BANNER
-    : "ca-app-pub-9856483340336068/4640385604";
+  const adUnitId = "ca-app-pub-9856483340336068/4640385604";
 
   return (
     <View style={styles.container}>

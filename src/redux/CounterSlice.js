@@ -40,7 +40,7 @@ export const fetchFontSize = createAsyncThunk(
   "FontSize/fetchFontSize",
   async () => {
     const response = await AsyncStorage.getItem("fontSize");
-    const data = response ? JSON.parse(response) : 72;
+    const data = response ? JSON.parse(response) : 68;
     return data;
   }
 );
@@ -52,7 +52,7 @@ const initialState = {
   error: null,
   vibrationEnabled: true,
   currentIndex: 0,
-  fontSize: 72,
+  fontSize: 68,
 };
 
 export const counterSlice = createSlice({

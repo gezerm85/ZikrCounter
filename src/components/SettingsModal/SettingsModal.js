@@ -79,13 +79,15 @@ const SettingsModal = ({ isVisible, onClose }) => {
                 color="black"
               />
             )}
-            <Switch
+  <View style={styles.switch}>
+  <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={vibrationEnabled ? "#1667e1" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
               value={vibrationEnabled}
             />
+  </View>
           </View>
           <View style={styles.fontContainer}>
             {buttonSizes.map((size) => {
@@ -102,7 +104,7 @@ const SettingsModal = ({ isVisible, onClose }) => {
                 >
                   <MaterialCommunityIcons
                     name={iconName}
-                    size={32}
+                    size={48}
                     color={iconColor}
                   />
                 </TouchableOpacity>

@@ -29,7 +29,7 @@ const CustomModal = ({ isVisible, onClose }) => {
   const dispatch = useDispatch();
 
   const handleOnPress = () => {
-    if (value !== 0) {
+    if (value !== 0 && fav.fav.length !== 0) {
       dispatch(setFavorite(fav));
       setFav({
         id: Math.floor(Math.random() * 9999999999),
@@ -57,10 +57,10 @@ const CustomModal = ({ isVisible, onClose }) => {
 
           <View style={styles.btnBox}>
             <Pressable onPress={onClose} style={styles.button}>
-              <Text>{t("CANCEL")}</Text>
+              <Text style={styles.buttonText}>{t("CANCEL")}</Text>
             </Pressable>
             <Pressable onPress={handleOnPress} style={styles.button}>
-              <Text>{t("SAVE")}</Text>
+              <Text style={styles.buttonText}>{t("SAVE")}</Text>
             </Pressable>
           </View>
         </View>

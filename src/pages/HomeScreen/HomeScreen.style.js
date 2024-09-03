@@ -30,8 +30,8 @@ export default styles = StyleSheet.create({
     justifyContent: "center",
   },
   btnBox: {
-    backgroundColor: "#E7F0DC",
-    padding: 12,
+    height: 62,
+    width: 62,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",

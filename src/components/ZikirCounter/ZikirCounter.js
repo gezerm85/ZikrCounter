@@ -15,6 +15,7 @@ import CustomModal from "../CustomModal/CustomModal";
 import { setTheme } from "../../utils/Theme/Theme";
 import styles from "./ZikirCounter.style";
 import { useTranslation } from "react-i18next";
+import CustomAlert from "../CustomAlert/CustomAlert";
 
 const ZikirCounterSkeleton = ({ onButtonClick }) => {
   const { t } = useTranslation();
@@ -27,22 +28,31 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
     (state) => state.counter
   );
 
+  
+
   const dispatch = useDispatch();
   const [sound, setSound] = useState(null);
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleSavePress = () => {
     handleButtonPress("button1");
     if (value !== 0) {
-      setModalVisible(!isModalVisible);
+      setIsModalVisible(!isModalVisible);
       if (vibrationEnabled == true) {
         Vibration.vibrate(25);
       }
     }
   };
 
+
+
+  const handleClose = () => {
+    setModalVisible(false);
+  };
+
   const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+    setIsModalVisible(!isModalVisible);
     if (vibrationEnabled == true) {
       Vibration.vibrate(25);
     }
@@ -81,6 +91,7 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
   const resetPress = () => {
     if (value !== 0) {
       dispatch(reset());
+      setModalVisible(false)
     }
   };
 
@@ -90,22 +101,7 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
       Vibration.vibrate(25);
     }
     if (value !== 0) {
-      Alert.alert(
-        t("RESET_COUNTER"),
-        t("CONFIRM_RESET"),
-        [
-          {
-            text: t("YES"),
-            onPress: resetPress,
-          },
-          {
-            text: t("NO"),
-            onPress: () => null,
-            style: "cancel",
-          },
-        ],
-        { cancelable: false }
-      );
+      setModalVisible(true);
     }
   };
 
@@ -141,6 +137,12 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
           <CustomModal isVisible={isModalVisible} onClose={toggleModal} />
         </View>
       )}
+            {modalVisible && (
+        <View style={styles.modalOverlay}>
+          <CustomAlert onClose={handleClose} visible={modalVisible}  onConfirm={resetPress}/>
+        </View>
+      )}
+
     </ImageBackground>
   );
 };

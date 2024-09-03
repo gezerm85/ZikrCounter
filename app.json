@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "zikirMatik",
-    "slug": "zikirMatik",
+    "name": "ZikirMatik",
+    "slug": "zikirmatik",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
@@ -9,22 +9,22 @@
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#1a1a1a"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.zikirmatik.app"
+      "bundleIdentifier": "com.zikirmatik.app.mobiflex"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./src/assets/icon.png",
+        "backgroundColor": "#1a1a1a"
       },
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS"
       ],
-      "package": "com.zikirmatik.app"
+      "package": "com.zikirmatik.app.mobiflex"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
@@ -58,7 +58,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "2072cb6d-85f0-4383-9a14-dc87f6645f88"
+        "projectId": "0a846fe7-f176-4047-8640-e7bede7bf897"
       }
     }
   }

@@ -22,8 +22,16 @@ export default styles = StyleSheet.create({
     padding: 5,
     borderBottomWidth: 1,
     borderColor: "#ccc",
+    height: 48
   },
   button: {
-    padding: 10,
+   height: 48,
+   paddingHorizontal: 24,
+   alignItems: 'center',
+   justifyContent: 'center',
+  },
+  buttonText:{
+    fontSize: 16,
+    fontFamily: "OpenSans",
   },
 });

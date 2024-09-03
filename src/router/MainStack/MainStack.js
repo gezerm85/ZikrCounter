@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import * as Notifications from "expo-notifications";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import LeftArrow from "../../components/LeftArrow/LeftArrow";
 
 const Stack = createStackNavigator();
 
@@ -121,7 +122,7 @@ const MainStack = () => {
           title: t("TITLE"),
           headerTitleAlign: "center",
           headerStyle: {
-            backgroundColor: setTheme[currentIndex].topBar,
+            backgroundColor: setTheme[currentIndex].header,
             height: 80,
           },
           headerTitleStyle: {
@@ -130,7 +131,7 @@ const MainStack = () => {
             fontSize: 22,
             fontFamily: "OpenSans",
           },
-          headerTintColor: "#fff",
+          headerLeft: ()=> <LeftArrow/>
         }}
         name="FavoriteScreen"
         component={FavoriteScreen}
@@ -139,9 +140,14 @@ const MainStack = () => {
         options={{
           headerStyle: {
             height: 80,
+            backgroundColor: '#302e2e',
           },
           title: t("PRIVACY_POLICY"),
+          headerTitleStyle:{
+            color: '#fff'
+          },
           headerTitleAlign: "center",
+          headerLeft:()=> <LeftArrow/>
         }}
         name="PrivacyPolicy"
         component={PrivacyPolicy}
@@ -150,9 +156,14 @@ const MainStack = () => {
         options={{
           headerStyle: {
             height: 80,
+            backgroundColor: '#302e2e',
+          },
+          headerTitleStyle:{
+            color: '#fff'
           },
           title: t("TERMS_OF_SERVICE"),
           headerTitleAlign: "center",
+          headerLeft:()=> <LeftArrow/>
         }}
         name="TermsOfService"
         component={TermsOfService}
