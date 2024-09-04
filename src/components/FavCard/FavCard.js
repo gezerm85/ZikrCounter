@@ -94,6 +94,7 @@ const FavCard = ({ item, handleButtonClick }) => {
           contentStyle={styles.menuContent}
         >
           <Menu.Item
+          style={styles.menuItem}
             leadingIcon={() => (
               <MaterialIcons name="mode-edit" size={24} color="black" />
             )}
@@ -101,6 +102,7 @@ const FavCard = ({ item, handleButtonClick }) => {
             title={t("EDIT")}
           />
           <Menu.Item
+           style={styles.menuItem}
             leadingIcon={() => (
               <MaterialIcons name="delete" size={24} color="#1a1a1a" />
             )}

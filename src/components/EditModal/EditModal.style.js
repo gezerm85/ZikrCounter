@@ -9,7 +9,7 @@ export default styles = StyleSheet.create({
     borderRadius: 8,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: "OpenSans",
     fontWeight: "900",
   },
@@ -19,11 +19,21 @@ export default styles = StyleSheet.create({
     gap: 16,
   },
   input: {
-    padding: 5,
+    height: 48,
     borderBottomWidth: 1,
     borderColor: "#ccc",
+    paddingLeft: 4,
+    fontSize: 18,
+    fontFamily: "OpenSans",
   },
   button: {
-    padding: 10,
+    height: 48,
+    paddingHorizontal: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnText: {
+    fontSize: 16,
+    fontFamily: "OpenSans",
   },
 });

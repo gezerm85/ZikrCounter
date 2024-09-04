@@ -127,9 +127,10 @@ const MainStack = () => {
           },
           headerTitleStyle: {
             color: "#ffff",
-            fontWeight: "400",
-            fontSize: 22,
+            fontWeight: "700",
+            fontSize: 24,
             fontFamily: "OpenSans",
+            
           },
           headerLeft: ()=> <LeftArrow/>
         }}

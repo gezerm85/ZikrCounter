@@ -71,11 +71,11 @@ const SettingsModal = ({ isVisible, onClose }) => {
           <Text style={styles.title}>{t("SETTINGS")}</Text>
           <View style={styles.bodyContainer}>
             {vibrationEnabled ? (
-              <MaterialIcons name="vibration" size={24} color="black" />
+              <MaterialIcons name="vibration" size={32} color="black" />
             ) : (
               <MaterialCommunityIcons
                 name="vibrate-off"
-                size={24}
+                size={32}
                 color="black"
               />
             )}
@@ -114,25 +114,25 @@ const SettingsModal = ({ isVisible, onClose }) => {
 
           <View style={styles.innerContainer}>
             <Pressable style={styles.btnBox} onPress={null}>
-              <FontAwesome name="star" size={24} color="#8b8787" />
+              <FontAwesome name="star" size={32} color="#8b8787" />
               <Text style={styles.text}>{t("RATE_US")}</Text>
             </Pressable>
             <Pressable style={styles.btnBox} onPress={handleEmailPress}>
-              <Ionicons name="mail" size={24} color="#8b8787" />
+              <Ionicons name="mail" size={32} color="#8b8787" />
               <Text style={styles.text}>{t("SUPPORT")}</Text>
             </Pressable>
             <Pressable
               style={styles.btnBox}
               onPress={() => nav.navigate("PrivacyPolicy")}
             >
-              <MaterialIcons name="security" size={24} color="#8b8787" />
+              <MaterialIcons name="security" size={32} color="#8b8787" />
               <Text style={styles.text}>{t("PRIVACY_POLICY")}</Text>
             </Pressable>
             <Pressable
               style={styles.btnBox}
               onPress={() => nav.navigate("TermsOfService")}
             >
-              <Ionicons name="document-text" size={24} color="#8b8787" />
+              <Ionicons name="document-text" size={32} color="#8b8787" />
               <Text style={styles.text}>{t("TERMS_OF_SERVICE")}</Text>
             </Pressable>
           </View>

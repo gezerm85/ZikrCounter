@@ -67,10 +67,10 @@ const EditModal = ({ isVisible, onClose, selectedItem }) => {
 
           <View style={styles.btnBox}>
             <Pressable onPress={onClose} style={styles.button}>
-              <Text>{t("CANCEL")}</Text>
+              <Text style={styles.btnText}>{t("CANCEL")}</Text>
             </Pressable>
             <Pressable onPress={handleOnPress} style={styles.button}>
-              <Text>{t("SAVE")}</Text>
+              <Text style={styles.btnText}>{t("SAVE")}</Text>
             </Pressable>
           </View>
         </View>

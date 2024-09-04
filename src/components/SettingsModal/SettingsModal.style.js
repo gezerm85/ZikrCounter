@@ -12,18 +12,20 @@ export default styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 16,
+    width: '100%'
   },
   innerContainer: {
     gap: 16,
+    width: '100%'
   },
   switch:{
-    width: 48,    
-    height: 48, 
+    width: 56,    
+    height: 56, 
     alignItems:'center',
     justifyContent:'center',
   },
   text: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "500",
     fontFamily: "OpenSans",
   },
@@ -38,6 +40,9 @@ export default styles = StyleSheet.create({
     gap: 12,
     alignItems: "center",
     height: 48,
+    width: '100%',
+    borderBottomWidth: 1,
+    borderColor: '#b2a9a9'
   },
 
   button: {

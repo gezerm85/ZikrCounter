@@ -22,7 +22,7 @@ export default styles = StyleSheet.create({
   },
   counter: {
     fontWeight: "700",
-    fontSize: 20,
+    fontSize: 22,
     color: "#ffffff",
     textAlignVertical: "center",
     fontFamily: "OpenSans",
@@ -36,10 +36,20 @@ export default styles = StyleSheet.create({
     alignItems: "center",
     gap: 6,
   },
-  menuBox: {},
+  menuBox: {
+    height: 48,
+    width: 48,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   menu: {
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
+    resizeMode: 'contain'
+  },
+  menuItem:{
+    height: 48,
+
   },
   textFav: {
     color: "#1a1a1a",
@@ -50,13 +60,14 @@ export default styles = StyleSheet.create({
   textDate: {
     color: "#1a1a1a",
     fontWeight: "400",
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: "OpenSans",
   },
   menuContent: {
     top: 35,
     right: 16,
     borderRadius: 8,
+    backgroundColor: '#fff',
   },
   modalOverlay: {
     position: "absolute",
