@@ -120,7 +120,7 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
             <Text style={styles.title}>{t("SAVE")}</Text>
             <Pressable
               accessible={true}
-              accessibilityLabel={t("SAVE")}
+              accessibilityLabel={"save"}
               onPress={handleSavePress}
               style={styles.smallCircle}
             />
@@ -129,7 +129,7 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
             <Text style={styles.title}>{t("RESET")}</Text>
             <Pressable
               accessible={true}
-              accessibilityLabel={t("RESET")}
+              accessibilityLabel={"Reset"}
               onPress={handleResetPress}
               style={styles.smallCircle}
             />

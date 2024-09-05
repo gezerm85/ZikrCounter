@@ -93,7 +93,7 @@ const FavCard = ({ item, handleButtonClick }) => {
           anchor={
             <TouchableOpacity
               accessible={true}
-              accessibilityLabel={t("EDIT")}
+              accessibilityLabel={"edit"}
               onPress={openMenu}
               style={styles.menuBox}
             >

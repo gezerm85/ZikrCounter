@@ -21,9 +21,6 @@ import { useTranslation } from "react-i18next";
 const SettingsModal = ({ isVisible, onClose }) => {
   const { t } = useTranslation();
 
-  console.log([{"scaleX": 1.55}, {"scaleY": 1.55}]);
-  
-
   const nav = useNavigation();
 
   const dispatch = useDispatch();
@@ -50,19 +47,28 @@ const SettingsModal = ({ isVisible, onClose }) => {
 
   const { vibrationEnabled, fontSize } = useSelector((state) => state.counter);
 
-
   const buttonSizes = [64, 68, 72, 76];
 
-
+  const fontSizeLabels = {
+    64: t('FONT_SIZE_64'),
+    68: t('FONT_SIZE_68'),
+    72: t('FONT_SIZE_72'),
+    76: t('FONT_SIZE_76'),
+  };
 
   return (
-    <View>
-      <Modal 
-      accessible={true}
-      accessibilityLabel={t("SETTINGS")}
-      isVisible={isVisible} 
-      onBackdropPress={onClose}>
-        <View style={styles.container}>
+    <View accessible={true} accessibilityLabel={"SETTINGS1"}>
+      <Modal
+        accessible={true}
+        accessibilityLabel={"SETTINGS2"}
+        isVisible={isVisible}
+        onBackdropPress={onClose}
+      >
+        <View
+          style={styles.container}
+          accessible={true}
+          accessibilityLabel={"SETTINGS3"}
+        >
           <Text style={styles.title}>{t("SETTINGS")}</Text>
           <View style={styles.bodyContainer}>
             {vibrationEnabled ? (
@@ -74,31 +80,34 @@ const SettingsModal = ({ isVisible, onClose }) => {
                 color="black"
               />
             )}
-  <View style={styles.switchContainer}>
-  <Switch
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={vibrationEnabled ? "#1667e1" : "#f4f3f4"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={vibrationEnabled}
-              style={styles.switch}
-              
-            />
-  </View>
+            <View style={styles.switchContainer}>
+              <Switch
+                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                thumbColor={vibrationEnabled ? "#1667e1" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={vibrationEnabled}
+                style={styles.switch}
+              />
+            </View>
           </View>
           <View style={styles.fontContainer}>
-            {buttonSizes.map((size) => {
+            {buttonSizes.map((size, index) => {
               const iconName =
                 size === fontSize || size > fontSize
                   ? "format-font-size-increase"
                   : "format-font-size-decrease";
               const iconColor = fontSize === size ? "#1667e1" : "#8b8787";
+              const fontLabel = fontSizeLabels[size];
+
+              
+              
 
               return (
                 <TouchableOpacity
-                style={styles.fontBtn}
-                accessible={true}
-                accessibilityLabel={t('FONTSİZE')}
+                  style={styles.fontBtn}
+                  accessible={true}
+                  accessibilityLabel={fontLabel}
                   key={size}
                   onPress={() => dispatch(setFontSize(size))}
                 >

@@ -98,18 +98,17 @@ const HomeScreen = () => {
         styles.container,
         { backgroundColor: setTheme[currentIndex].bgColor },
       ]}
+      accessible={true}
+      accessibilityLabel={"Home1"}
     >
       <StatusBar barStyle="default" />
 
       <View
-
-accessible={true}
-accessibilityLabel={"Home"}
-
-      style={styles.btnContainer}>
+        style={styles.btnContainer}
+      >
         <Pressable
           accessible={true}
-          accessibilityLabel={t("SETTINGS")}
+          accessibilityLabel={"SETTINGS1"}
           style={[
             styles.btnBox,
             { backgroundColor: setTheme[currentIndex].cardColor },
@@ -131,7 +130,7 @@ accessibilityLabel={"Home"}
         </Pressable>
         <Pressable
           accessible={true}
-          accessibilityLabel={t('COUNT')}
+          accessibilityLabel={t("COUNT")}
           style={[
             styles.btnBox,
             { backgroundColor: setTheme[currentIndex].cardColor },
