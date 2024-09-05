@@ -53,6 +53,7 @@ const CustomModal = ({ isVisible, onClose }) => {
             value={fav.fav}
             onChangeText={(text) => setFav({ ...fav, fav: text })}
             style={styles.input}
+            placeholderTextColor={'#333333'}
           />
 
           <View style={styles.btnBox}>

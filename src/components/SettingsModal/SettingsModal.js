@@ -21,6 +21,9 @@ import { useTranslation } from "react-i18next";
 const SettingsModal = ({ isVisible, onClose }) => {
   const { t } = useTranslation();
 
+  console.log([{"scaleX": 1.55}, {"scaleY": 1.55}]);
+  
+
   const nav = useNavigation();
 
   const dispatch = useDispatch();
@@ -47,26 +50,18 @@ const SettingsModal = ({ isVisible, onClose }) => {
 
   const { vibrationEnabled, fontSize } = useSelector((state) => state.counter);
 
-  const icons =
-    fontSize >= 68 ? (
-      <MaterialCommunityIcons
-        name="format-font-size-decrease"
-        size={32}
-        color={fontSize === 64 ? "#1667e1" : "#8b8787"}
-      />
-    ) : (
-      <MaterialCommunityIcons
-        name="format-font-size-increase"
-        size={32}
-        color={fontSize === 72 ? "#1667e1" : "#8b8787"}
-      />
-    );
 
   const buttonSizes = [64, 68, 72, 76];
 
+
+
   return (
     <View>
-      <Modal isVisible={isVisible} onBackdropPress={onClose}>
+      <Modal 
+      accessible={true}
+      accessibilityLabel={t("SETTINGS")}
+      isVisible={isVisible} 
+      onBackdropPress={onClose}>
         <View style={styles.container}>
           <Text style={styles.title}>{t("SETTINGS")}</Text>
           <View style={styles.bodyContainer}>
@@ -79,13 +74,15 @@ const SettingsModal = ({ isVisible, onClose }) => {
                 color="black"
               />
             )}
-  <View style={styles.switch}>
+  <View style={styles.switchContainer}>
   <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={vibrationEnabled ? "#1667e1" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
               value={vibrationEnabled}
+              style={styles.switch}
+              
             />
   </View>
           </View>
@@ -99,12 +96,15 @@ const SettingsModal = ({ isVisible, onClose }) => {
 
               return (
                 <TouchableOpacity
+                style={styles.fontBtn}
+                accessible={true}
+                accessibilityLabel={t('FONTSİZE')}
                   key={size}
                   onPress={() => dispatch(setFontSize(size))}
                 >
                   <MaterialCommunityIcons
                     name={iconName}
-                    size={48}
+                    size={40}
                     color={iconColor}
                   />
                 </TouchableOpacity>

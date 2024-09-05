@@ -40,7 +40,7 @@ export const setTheme = [
     cardColor: "#DDEAF0",
     bgColor: "#9DB5C9",
     main: "#657F94",
-    header: "#7D9CB3"
+    header: "#557893"
   },
   {
     img: vector3,
@@ -131,7 +131,7 @@ export const setTheme = [
     cardColor: "#D1E8F0",
     bgColor: "#86A4C9",
     main: "#536994",
-    header: "#6880B3"
+    header: "#6078ac"
   },
   {
     img: vector16,

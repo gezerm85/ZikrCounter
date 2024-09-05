@@ -22,6 +22,7 @@ export default styles = StyleSheet.create({
     height: "75%",
     alignItems: "center",
     justifyContent: "center",
+    
   },
   bottomContainer: {
     width: width,

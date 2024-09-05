@@ -28,8 +28,6 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
     (state) => state.counter
   );
 
-  
-
   const dispatch = useDispatch();
   const [sound, setSound] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -44,8 +42,6 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
       }
     }
   };
-
-
 
   const handleClose = () => {
     setModalVisible(false);
@@ -91,7 +87,7 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
   const resetPress = () => {
     if (value !== 0) {
       dispatch(reset());
-      setModalVisible(false)
+      setModalVisible(false);
     }
   };
 
@@ -107,6 +103,8 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
 
   return (
     <ImageBackground
+    accessible={true}
+    accessibilityLabel={"Home"}
       imageStyle={styles.bgImg}
       source={setTheme[currentIndex].img}
       style={styles.container}
@@ -120,11 +118,21 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
         <View style={styles.innerContainer}>
           <View style={styles.btnBox}>
             <Text style={styles.title}>{t("SAVE")}</Text>
-            <Pressable onPress={handleSavePress} style={styles.smallCircle} />
+            <Pressable
+              accessible={true}
+              accessibilityLabel={t("SAVE")}
+              onPress={handleSavePress}
+              style={styles.smallCircle}
+            />
           </View>
           <View style={styles.btnBox}>
             <Text style={styles.title}>{t("RESET")}</Text>
-            <Pressable onPress={handleResetPress} style={styles.smallCircle} />
+            <Pressable
+              accessible={true}
+              accessibilityLabel={t("RESET")}
+              onPress={handleResetPress}
+              style={styles.smallCircle}
+            />
           </View>
         </View>
         <View style={styles.btnContainer}>
@@ -137,12 +145,15 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
           <CustomModal isVisible={isModalVisible} onClose={toggleModal} />
         </View>
       )}
-            {modalVisible && (
+      {modalVisible && (
         <View style={styles.modalOverlay}>
-          <CustomAlert onClose={handleClose} visible={modalVisible}  onConfirm={resetPress}/>
+          <CustomAlert
+            onClose={handleClose}
+            visible={modalVisible}
+            onConfirm={resetPress}
+          />
         </View>
       )}
-
     </ImageBackground>
   );
 };

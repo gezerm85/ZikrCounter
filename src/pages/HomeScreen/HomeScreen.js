@@ -11,6 +11,7 @@ import styles from "./HomeScreen.style";
 import AdBanner from "../../components/AdBanner/AdBanner";
 import InterstitialAd from "../../components/InterstitialAd/InterstitialAd";
 import { img } from "../../utils/img/img";
+import { useTranslation } from "react-i18next";
 
 const HomeScreen = () => {
   const [isSettingsModal, setIsSettingsModal] = useState(false);
@@ -29,6 +30,8 @@ const HomeScreen = () => {
     button3: 25,
     button4: 100,
   };
+
+  const { t } = useTranslation();
 
   const handleButtonClick = (buttonKey) => {
     setClickCounts((prevCounts) => {
@@ -98,8 +101,15 @@ const HomeScreen = () => {
     >
       <StatusBar barStyle="default" />
 
-      <View style={styles.btnContainer}>
+      <View
+
+accessible={true}
+accessibilityLabel={"Home"}
+
+      style={styles.btnContainer}>
         <Pressable
+          accessible={true}
+          accessibilityLabel={t("SETTINGS")}
           style={[
             styles.btnBox,
             { backgroundColor: setTheme[currentIndex].cardColor },
@@ -109,6 +119,8 @@ const HomeScreen = () => {
           <Image style={styles.img} source={img.Settings} />
         </Pressable>
         <Pressable
+          accessible={true}
+          accessibilityLabel={"Theme"}
           style={[
             styles.btnBox,
             { backgroundColor: setTheme[currentIndex].cardColor },
@@ -118,6 +130,8 @@ const HomeScreen = () => {
           <Image style={styles.img} source={img.Paint} />
         </Pressable>
         <Pressable
+          accessible={true}
+          accessibilityLabel={t('COUNT')}
           style={[
             styles.btnBox,
             { backgroundColor: setTheme[currentIndex].cardColor },
@@ -127,6 +141,8 @@ const HomeScreen = () => {
           <Image style={styles.img} source={img.Sound} />
         </Pressable>
         <Pressable
+          accessible={true}
+          accessibilityLabel={t("TITLE")}
           style={[
             styles.btnBox,
             { backgroundColor: setTheme[currentIndex].cardColor },

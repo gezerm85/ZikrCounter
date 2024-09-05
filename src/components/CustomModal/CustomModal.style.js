@@ -12,6 +12,7 @@ export default styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: "OpenSans",
     fontWeight: "900",
+    color: '#000'
   },
   btnBox: {
     flexDirection: "row",
@@ -22,7 +23,8 @@ export default styles = StyleSheet.create({
     padding: 5,
     borderBottomWidth: 1,
     borderColor: "#ccc",
-    height: 48
+    height: 48,
+    color: '#333333'
   },
   button: {
    height: 48,
@@ -33,5 +35,6 @@ export default styles = StyleSheet.create({
   buttonText:{
     fontSize: 16,
     fontFamily: "OpenSans",
+    color: '#333333'
   },
 });

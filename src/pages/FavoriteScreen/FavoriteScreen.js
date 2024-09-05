@@ -42,6 +42,8 @@ const FavoriteScreen = () => {
 
   return (
     <View
+    accessible={true}
+    accessibilityLabel={t('TITLE')}
       style={[
         styles.container,
         { backgroundColor: setTheme[currentIndex].bgColor },

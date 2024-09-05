@@ -62,7 +62,11 @@ const FavCard = ({ item, handleButtonClick }) => {
     dispatch(removeFavorite(item.id));
   };
   return (
-    <View style={styles.container}>
+    <View
+      accessible={true}
+      accessibilityLabel={"Card"}
+      style={styles.container}
+    >
       <View
         style={[
           styles.box,
@@ -87,14 +91,19 @@ const FavCard = ({ item, handleButtonClick }) => {
           visible={visible}
           onDismiss={closeMenu}
           anchor={
-            <TouchableOpacity onPress={openMenu} style={styles.menuBox}>
+            <TouchableOpacity
+              accessible={true}
+              accessibilityLabel={t("EDIT")}
+              onPress={openMenu}
+              style={styles.menuBox}
+            >
               <Image style={styles.menu} source={img.menu} />
             </TouchableOpacity>
           }
           contentStyle={styles.menuContent}
         >
           <Menu.Item
-          style={styles.menuItem}
+            style={styles.menuItem}
             leadingIcon={() => (
               <MaterialIcons name="mode-edit" size={24} color="black" />
             )}
@@ -102,7 +111,7 @@ const FavCard = ({ item, handleButtonClick }) => {
             title={t("EDIT")}
           />
           <Menu.Item
-           style={styles.menuItem}
+            style={styles.menuItem}
             leadingIcon={() => (
               <MaterialIcons name="delete" size={24} color="#1a1a1a" />
             )}
