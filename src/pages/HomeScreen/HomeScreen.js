@@ -103,9 +103,7 @@ const HomeScreen = () => {
     >
       <StatusBar barStyle="default" />
 
-      <View
-        style={styles.btnContainer}
-      >
+      <View style={styles.btnContainer}>
         <Pressable
           accessible={true}
           accessibilityLabel={"SETTINGS1"}
@@ -158,7 +156,11 @@ const HomeScreen = () => {
         <AdBanner />
       </View>
       {isSettingsModal && (
-        <View style={styles.modalOverlay}>
+        <View
+          style={styles.modalOverlay}
+          accessible={true}
+          accessibilityLabel={"SETTINGS4"}
+        >
           <SettingsModal
             isVisible={isSettingsModal}
             onClose={SettingsModalToggle}
