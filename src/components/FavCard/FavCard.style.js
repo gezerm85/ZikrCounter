@@ -49,7 +49,10 @@ export default styles = StyleSheet.create({
   },
   menuItem:{
     height: 48,
-
+  },
+  menuText:{
+    color: '#000',
+    fontSize: 16
   },
   textFav: {
     color: "#1a1a1a",

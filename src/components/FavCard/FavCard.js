@@ -106,7 +106,7 @@ const FavCard = ({ item, handleButtonClick }) => {
               <MaterialIcons name="mode-edit" size={24} color="black" />
             )}
             onPress={handleOnEditPress}
-            title={t("EDIT")}
+            title={<Text style={styles.menuText}>{t("EDIT")}</Text>}
           />
           <Menu.Item
             style={styles.menuItem}
@@ -114,7 +114,7 @@ const FavCard = ({ item, handleButtonClick }) => {
               <MaterialIcons name="delete" size={24} color="#1a1a1a" />
             )}
             onPress={removeOnPress}
-            title={t("REMOVE")}
+            title={<Text style={styles.menuText}>{t("REMOVE")}</Text>}
           />
         </Menu>
       </View>
