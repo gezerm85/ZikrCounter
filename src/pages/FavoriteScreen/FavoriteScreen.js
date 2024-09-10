@@ -1,4 +1,4 @@
-import { FlatList, Text, View, Pressable } from "react-native";
+import { FlatList, Text, View,  } from "react-native";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import FavCard from "../../components/FavCard/FavCard";
@@ -7,7 +7,6 @@ import { setTheme } from "../../utils/Theme/Theme";
 import styles from "./FavoriteScreen.style";
 import InterstitialAd from "../../components/InterstitialAd/InterstitialAd";
 import { useTranslation } from "react-i18next";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AdBanner from "../../components/AdBanner/AdBanner";
 
 const FavoriteScreen = () => {

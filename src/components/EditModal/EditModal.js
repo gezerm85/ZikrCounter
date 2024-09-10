@@ -2,7 +2,7 @@ import { Text, View, TextInput, Pressable, Vibration } from "react-native";
 import React, { useState, useEffect } from "react";
 import Modal from "react-native-modal";
 import { useDispatch, useSelector } from "react-redux";
-import { reset, setFavorite, updateFavorite } from "../../redux/CounterSlice";
+import {  updateFavorite } from "../../redux/CounterSlice";
 import moment from "moment";
 import styles from "./EditModal.style";
 import { getLocales } from "expo-localization";
