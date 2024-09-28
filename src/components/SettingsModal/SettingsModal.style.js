@@ -5,7 +5,7 @@ export default styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingHorizontal: 16,
     paddingVertical: 24,
-    gap: 16,
+    gap: 8,
     borderRadius: 8,
     alignItems: "flex-start",
   
