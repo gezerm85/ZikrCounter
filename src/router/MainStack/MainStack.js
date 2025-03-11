@@ -83,10 +83,20 @@ const MainStack = () => {
   };
 
   const scheduleDailyNotifications = async () => {
+    // t("bildirimler") JSON'daki bildirimler dizisini döndürmeli
+    const NOTIFICATIONS = t("NOTIFICATIONS");
+    const fixedMessage = NOTIFICATIONS[0];
+    const getRandomMessage = () => {
+      // İlk elemanı hariç tutuyoruz
+      const messages = NOTIFICATIONS.filter((msg, index) => index !== 0);
+      return messages[Math.floor(Math.random() * messages.length)];
+    };
+
+    // Sabah 09:00 için rastgele mesaj
     await Notifications.scheduleNotificationAsync({
       content: {
         title: t("APP_NAME"),
-        body: t("MORNING"),
+        body: getRandomMessage(),
         data: { screen: "Home" },
       },
       trigger: {
@@ -96,14 +106,57 @@ const MainStack = () => {
       },
     });
 
+    // Öğlen 12:00 için rastgele mesaj
     await Notifications.scheduleNotificationAsync({
       content: {
         title: t("APP_NAME"),
-        body: t("NIGHT"),
+        body: getRandomMessage(),
+        data: { screen: "Home" },
+      },
+      trigger: {
+        hour: 12,
+        minute: 0,
+        repeats: true,
+      },
+    });
+
+    // Akşam 18:00 için rastgele mesaj
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: t("APP_NAME"),
+        body: getRandomMessage(),
         data: { screen: "Home" },
       },
       trigger: {
         hour: 18,
+        minute: 0,
+        repeats: true,
+      },
+    });
+
+    // Gece 22:00 için rastgele mesaj
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: t("APP_NAME"),
+        body: getRandomMessage(),
+        data: { screen: "Home" },
+      },
+      trigger: {
+        hour: 22,
+        minute: 0,
+        repeats: true,
+      },
+    });
+
+    // Gece 03:00 için sabit mesaj ("Uyan ey mümin, gün ışığıyla kalbini imanla doldur!")
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: t("APP_NAME"),
+        body: fixedMessage,
+        data: { screen: "Home" },
+      },
+      trigger: {
+        hour: 3,
         minute: 0,
         repeats: true,
       },
@@ -130,9 +183,8 @@ const MainStack = () => {
             fontWeight: "700",
             fontSize: 24,
             fontFamily: "OpenSans",
-            
           },
-          headerLeft: ()=> <LeftArrow/>
+          headerLeft: () => <LeftArrow />,
         }}
         name="FavoriteScreen"
         component={FavoriteScreen}
@@ -141,14 +193,14 @@ const MainStack = () => {
         options={{
           headerStyle: {
             height: 80,
-            backgroundColor: '#302e2e',
+            backgroundColor: "#302e2e",
           },
           title: t("PRIVACY_POLICY"),
-          headerTitleStyle:{
-            color: '#fff'
+          headerTitleStyle: {
+            color: "#fff",
           },
           headerTitleAlign: "center",
-          headerLeft:()=> <LeftArrow/>
+          headerLeft: () => <LeftArrow />,
         }}
         name="PrivacyPolicy"
         component={PrivacyPolicy}
@@ -157,14 +209,14 @@ const MainStack = () => {
         options={{
           headerStyle: {
             height: 80,
-            backgroundColor: '#302e2e',
+            backgroundColor: "#302e2e",
           },
-          headerTitleStyle:{
-            color: '#fff'
+          headerTitleStyle: {
+            color: "#fff",
           },
           title: t("TERMS_OF_SERVICE"),
           headerTitleAlign: "center",
-          headerLeft:()=> <LeftArrow/>
+          headerLeft: () => <LeftArrow />,
         }}
         name="TermsOfService"
         component={TermsOfService}
