@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { AppState, Alert } from "react-native";
+import { AppState, Alert, Platform } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../../pages/HomeScreen/HomeScreen";
 import FavoriteScreen from "../../pages/FavoriteScreen/FavoriteScreen";
@@ -19,58 +19,55 @@ const MainStack = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
+  // 🔹 Android için bildirim kanalı oluştur
   useEffect(() => {
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.HIGH,
+        sound: "default",
+      });
+    }
+  }, []);
+
+  // 🔹 Uygulama ilk açıldığında izinleri kontrol et ve günlük bildirimleri planla
+  useEffect(() => {
+
     const managePermissions = async () => {
-      const { status: existingStatus } =
-        await Notifications.getPermissionsAsync();
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+
       if (existingStatus !== "granted") {
         const { status } = await Notifications.requestPermissionsAsync();
         if (status !== "granted") {
-          Alert.alert(
-            t("PERMISSION_DENIED_TITLE"),
-            t("PERMISSION_DENIED_MESSAGE")
-          );
+          Alert.alert(t("PERMISSION_DENIED_TITLE"), t("PERMISSION_DENIED_MESSAGE"));
           return;
         }
       }
     };
 
     managePermissions();
-
-    const cancelPreviousNotifications = async () => {
-      await Notifications.cancelAllScheduledNotificationsAsync();
-    };
-
-    const appStateSubscription = AppState.addEventListener(
-      "change",
-      (nextAppState) => {
-        if (nextAppState === "background" && value !== 0) {
-          setTimeout(() => {
-            sendNotification();
-          }, 1000);
-        }
-      }
-    );
-
-    const notificationResponseSubscription =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        const screen = response.notification.request.content.data.screen;
-        if (screen) {
-          navigation.navigate(screen);
-        }
-      });
-
-    cancelPreviousNotifications();
     scheduleDailyNotifications();
+
+  }, []);
+
+  // 🔹 Uygulama arka plana geçtiğinde bildirim tetikle
+  useEffect(() => {
+    const appStateSubscription = AppState.addEventListener("change", (nextAppState) => {
+      if (nextAppState === "background" && value !== 0) {
+        sendNotification();
+      }
+    });
 
     return () => {
       appStateSubscription.remove();
-      notificationResponseSubscription.remove();
     };
-  }, [value, navigation, t]);
+  }, [value]);
 
+  // 🔹 Bildirim Gönderme Fonksiyonu
   const sendNotification = async () => {
-    if (value === 0) return;
+    if (value === 0) {
+      return;
+    }
 
     await Notifications.scheduleNotificationAsync({
       content: {
@@ -78,98 +75,53 @@ const MainStack = () => {
         body: `${t("COUNT")} ${value} - ${t("CLICK_TO_CONTINUE")}`,
         data: { screen: "Home" },
       },
-      trigger: { seconds: 1 },
+      trigger: { seconds: 3 }, // 🔹 Test için tetikleyiciyi 3 saniye yaptık
     });
   };
 
+  // 🔹 Günlük Bildirimleri Planlama Fonksiyonu
   const scheduleDailyNotifications = async () => {
-    // t("bildirimler") JSON'daki bildirimler dizisini döndürmeli
+    await Notifications.cancelAllScheduledNotificationsAsync(); // 🔹 Eski bildirimleri iptal et
+
     const NOTIFICATIONS = t("NOTIFICATIONS");
     const fixedMessage = NOTIFICATIONS[0];
     const getRandomMessage = () => {
-      // İlk elemanı hariç tutuyoruz
       const messages = NOTIFICATIONS.filter((msg, index) => index !== 0);
       return messages[Math.floor(Math.random() * messages.length)];
     };
 
-    // Sabah 09:00 için rastgele mesaj
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: t("APP_NAME"),
-        body: getRandomMessage(),
-        data: { screen: "Home" },
-      },
-      trigger: {
-        hour: 9,
-        minute: 0,
-        repeats: true,
-      },
-    });
+    try {
+      const notificationTimes = [
+        { hour: 9, message: getRandomMessage() },
+        { hour: 12, message: getRandomMessage() },
+        { hour: 18, message: getRandomMessage() },
+        { hour: 22, message: getRandomMessage() },
+        { hour: 3, message: fixedMessage },
+      ];
 
-    // Öğlen 12:00 için rastgele mesaj
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: t("APP_NAME"),
-        body: getRandomMessage(),
-        data: { screen: "Home" },
-      },
-      trigger: {
-        hour: 12,
-        minute: 0,
-        repeats: true,
-      },
-    });
+      for (const { hour, message } of notificationTimes) {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: t("APP_NAME"),
+            body: message,
+            data: { screen: "Home" },
+          },
+          trigger: {
+            hour,
+            minute: 0,
+            repeats: true,
+          },
+        });
+      }
 
-    // Akşam 18:00 için rastgele mesaj
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: t("APP_NAME"),
-        body: getRandomMessage(),
-        data: { screen: "Home" },
-      },
-      trigger: {
-        hour: 18,
-        minute: 0,
-        repeats: true,
-      },
-    });
-
-    // Gece 22:00 için rastgele mesaj
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: t("APP_NAME"),
-        body: getRandomMessage(),
-        data: { screen: "Home" },
-      },
-      trigger: {
-        hour: 22,
-        minute: 0,
-        repeats: true,
-      },
-    });
-
-    // Gece 03:00 için sabit mesaj ("Uyan ey mümin, gün ışığıyla kalbini imanla doldur!")
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: t("APP_NAME"),
-        body: fixedMessage,
-        data: { screen: "Home" },
-      },
-      trigger: {
-        hour: 3,
-        minute: 0,
-        repeats: true,
-      },
-    });
+    } catch (error) {
+      console.log("Günlük bildirimler planlanırken hata oluştu:", error);
+    }
   };
 
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="Home"
-        component={HomeScreen}
-      />
+      <Stack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
       <Stack.Screen
         options={{
           title: t("TITLE"),

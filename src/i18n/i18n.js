@@ -52,6 +52,7 @@ i18n.use(initReactI18next).init({
   resources,
   lng: languageTag,
   fallbackLng: "tr",
+  returnObjects: true,
   interpolation: {
     escapeValue: false,
   },
