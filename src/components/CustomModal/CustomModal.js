@@ -1,10 +1,9 @@
-import { Text, View, TextInput, Pressable } from "react-native";
+import { Text, View, TextInput, Pressable, StyleSheet, Modal } from "react-native";
 import React, { useState } from "react";
-import Modal from "react-native-modal";
+// Using built-in Modal instead of react-native-modal
 import { useDispatch, useSelector } from "react-redux";
 import { reset, setFavorite } from "../../redux/CounterSlice";
 import moment from "moment";
-import styles from "./CustomModal.style";
 import { getLocales } from "expo-localization";
 import { useTranslation } from "react-i18next";
 
@@ -44,8 +43,13 @@ const CustomModal = ({ isVisible, onClose }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Modal isVisible={isVisible} onBackdropPress={onClose}>
+    <Modal
+      visible={isVisible}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={onClose}
+    >
+      <View style={styles.overlay}>
         <View style={styles.bodyContainer}>
           <Text style={styles.title}>{t("SAVE_LIST")}</Text>
           <TextInput
@@ -65,9 +69,55 @@ const CustomModal = ({ isVisible, onClose }) => {
             </Pressable>
           </View>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 
 export default CustomModal;
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  bodyContainer: {
+    backgroundColor: "#fff",
+    padding: 16,
+    gap: 16,
+    borderRadius: 8,
+    width: "90%",
+    maxWidth: 400,
+  },
+  title: {
+    fontSize: 18,
+    fontFamily: "OpenSans",
+    fontWeight: "900",
+    color: '#000'
+  },
+  btnBox: {
+    flexDirection: "row",
+    alignSelf: "flex-end",
+    gap: 16,
+  },
+  input: {
+    padding: 5,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+    height: 48,
+    color: '#333333'
+  },
+  button: {
+   height: 48,
+   paddingHorizontal: 24,
+   alignItems: 'center',
+   justifyContent: 'center',
+  },
+  buttonText:{
+    fontSize: 16,
+    fontFamily: "OpenSans",
+    color: '#333333'
+  },
+});

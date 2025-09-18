@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import {
-  Vibration,
   View,
   Pressable,
-  Alert,
   Text,
   ImageBackground,
+  StyleSheet,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { increment, reset } from "../../redux/CounterSlice";
-import { Audio } from "expo-av";
+import { useAudioPlayer } from 'expo-audio';
 import CustomButton from "../CustomButton/CustomButton";
 import CustomModal from "../CustomModal/CustomModal";
-import { setTheme } from "../../utils/Theme/Theme";
-import styles from "./ZikirCounter.style";
+import { vectorThemes, fixedColors } from "../../utils/Theme/VectorTheme";
 import { useTranslation } from "react-i18next";
 import CustomAlert from "../CustomAlert/CustomAlert";
 
@@ -24,12 +22,15 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
     onButtonClick(value);
   };
 
-  const { value, vibrationEnabled, currentIndex, fontSize } = useSelector(
+  const { value, currentIndex, fontSize } = useSelector(
     (state) => state.counter
   );
 
   const dispatch = useDispatch();
-  const [sound, setSound] = useState(null);
+  
+  // Audio player setup
+  const player = useAudioPlayer(require('../../assets/sound/click.mp3'));
+  
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -37,9 +38,6 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
     handleButtonPress("button1");
     if (value !== 0) {
       setIsModalVisible(!isModalVisible);
-      if (vibrationEnabled == true) {
-        Vibration.vibrate(25);
-      }
     }
   };
 
@@ -49,38 +47,21 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
 
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
-    if (vibrationEnabled == true) {
-      Vibration.vibrate(25);
-    }
   };
 
-  useEffect(() => {
-    const loadSound = async () => {
-      const { sound } = await Audio.Sound.createAsync(
-        require("../../assets/sound/click.mp3")
-      );
-      setSound(sound);
-    };
 
-    loadSound();
-
-    return () => {
-      if (sound) {
-        sound.unloadAsync();
-      }
-    };
-  }, [dispatch]);
 
   const handleOnPress = async () => {
     handleButtonPress("button4");
-    if (vibrationEnabled) {
-      Vibration.vibrate(25);
+    
+    // Play click sound
+    try {
+      player.seekTo(0);
+      player.play();
+    } catch (error) {
+      console.log('Ses çalma hatası:', error);
     }
-
-    if (sound) {
-      await sound.replayAsync();
-    }
-
+    
     dispatch(increment());
   };
 
@@ -93,22 +74,19 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
 
   const handleResetPress = () => {
     handleButtonPress("button1");
-    if (vibrationEnabled) {
-      Vibration.vibrate(25);
-    }
     if (value !== 0) {
       setModalVisible(true);
     }
   };
 
   return (
-    <ImageBackground
-    accessible={true}
-    accessibilityLabel={"Home"}
-      imageStyle={styles.bgImg}
-      source={setTheme[currentIndex].img}
-      style={styles.container}
-    >
+        <ImageBackground
+        accessible={true}
+        accessibilityLabel={"Home"}
+          imageStyle={styles.bgImg}
+          source={vectorThemes[currentIndex].img}
+          style={styles.container}
+        >
       <View style={styles.bodyContainer}>
         <View style={styles.screenContainer}>
           <View style={styles.screen}>
@@ -158,3 +136,94 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
   );
 };
 export default ZikirCounterSkeleton;
+
+const styles = StyleSheet.create({
+  container: {
+    width: 350,
+    height: 450,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  bgImg: {
+    resizeMode: "contain",
+  },
+  title: {
+    color: "#fff",
+    fontWeight: "600",
+    fontSize: 15,
+    fontFamily: "OpenSans",
+    width: "100%",
+    textAlign: "center",
+  },
+  bodyContainer: {
+    height: "85%",
+    width: "80%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  screenContainer: {
+    width: "100%",
+    height: "25%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  innerContainer: {
+    flexDirection: "row",
+    width: "100%",
+    height: "25%",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 70,
+  },
+  btnContainer: {
+    width: "100%",
+    height: "50%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnBox: {
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 6,
+  },
+  btnText:{
+    backgroundColor: 'red',
+    fontSize: 22
+  },
+  bigCircle: {
+    height: 155,
+    width: 155,
+    borderRadius: 600,
+    backgroundColor: "#6D804C",
+  },
+  smallCircle: {
+    backgroundColor: "#fff",
+    height: 51,
+    width: 51,
+    borderRadius: 100,
+  },
+  screen: {
+    backgroundColor: "#C3C3C3",
+    height: "80%",
+    width: "70%",
+    borderRadius: 16,
+    alignItems: "flex-end",
+    justifyContent: "center",
+  },
+  text: {
+    color: "#000",
+    height: "100%",
+    fontFamily: "digital",
+    textAlignVertical: "center",
+    marginRight: 6,
+  },
+  modalOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

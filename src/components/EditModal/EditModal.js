@@ -1,17 +1,16 @@
-import { Text, View, TextInput, Pressable, Vibration } from "react-native";
+import { Text, View, TextInput, Pressable, StyleSheet, Modal } from "react-native";
 import React, { useState, useEffect } from "react";
-import Modal from "react-native-modal";
+// Using built-in Modal instead of react-native-modal
 import { useDispatch, useSelector } from "react-redux";
 import {  updateFavorite } from "../../redux/CounterSlice";
 import moment from "moment";
-import styles from "./EditModal.style";
 import { getLocales } from "expo-localization";
 import { useTranslation } from "react-i18next";
 
 const EditModal = ({ isVisible, onClose, selectedItem }) => {
   const { t } = useTranslation();
 
-  const { value, vibrationEnabled } = useSelector((e) => e.counter);
+  const { value } = useSelector((e) => e.counter);
 
   const date = getLocales()[0].languageTag.split("-")[0].toString() || "tr";
 
@@ -48,14 +47,16 @@ const EditModal = ({ isVisible, onClose, selectedItem }) => {
     } else {
       onClose();
     }
-    if (vibrationEnabled == true) {
-      Vibration.vibrate(25);
-    }
   };
 
   return (
-    <View style={styles.container}>
-      <Modal isVisible={isVisible} onBackdropPress={onClose}>
+    <Modal
+      visible={isVisible}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={onClose}
+    >
+      <View style={styles.overlay}>
         <View style={styles.bodyContainer}>
           <Text style={styles.title}>{t("EDIT")}</Text>
           <TextInput
@@ -74,9 +75,54 @@ const EditModal = ({ isVisible, onClose, selectedItem }) => {
             </Pressable>
           </View>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 
 export default EditModal;
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  bodyContainer: {
+    backgroundColor: "#fff",
+    padding: 16,
+    gap: 16,
+    borderRadius: 8,
+    width: "90%",
+    maxWidth: 400,
+  },
+  title: {
+    fontSize: 20,
+    fontFamily: "OpenSans",
+    fontWeight: "900",
+  },
+  btnBox: {
+    flexDirection: "row",
+    alignSelf: "flex-end",
+    gap: 16,
+  },
+  input: {
+    height: 48,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+    paddingLeft: 4,
+    fontSize: 18,
+    fontFamily: "OpenSans",
+  },
+  button: {
+    height: 48,
+    paddingHorizontal: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnText: {
+    fontSize: 16,
+    fontFamily: "OpenSans",
+  },
+});

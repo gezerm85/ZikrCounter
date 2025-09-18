@@ -1,18 +1,18 @@
-import { FlatList, Text, View,  } from "react-native";
+import { FlatList, Text, View, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import FavCard from "../../components/FavCard/FavCard";
 import "moment/locale/tr";
-import { setTheme } from "../../utils/Theme/Theme";
-import styles from "./FavoriteScreen.style";
+import { fixedColors } from "../../utils/Theme/VectorTheme";
 import InterstitialAd from "../../components/InterstitialAd/InterstitialAd";
 import { useTranslation } from "react-i18next";
 import AdBanner from "../../components/AdBanner/AdBanner";
+import CustomHeader from "../../components/CustomHeader/CustomHeader";
 
 const FavoriteScreen = () => {
   const { t } = useTranslation();
 
-  const { favorite, currentIndex } = useSelector((state) => state.counter);
+  const { favorite } = useSelector((state) => state.counter);
 
   const [clickCounts, setClickCounts] = useState({
     button1: 0,
@@ -41,16 +41,25 @@ const FavoriteScreen = () => {
 
   return (
     <View
-    accessible={true}
-    accessibilityLabel={t('TITLE')}
+      accessible={true}
+      accessibilityLabel={t('TITLE')}
       style={[
         styles.container,
-        { backgroundColor: setTheme[currentIndex].bgColor },
+        { backgroundColor: fixedColors.bgColor },
       ]}
     >
+      <CustomHeader 
+        title={t("TITLE")} 
+        subtitle={`${favorite.length} ${t("SAVED_DHIKR")}`} 
+      />
+
       <View style={styles.bodyContainer}>
         {favorite.length == 0 ? (
-          <Text style={styles.title}>{t("NO_DHIKR")}</Text>
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyIcon}>📝</Text>
+            <Text style={styles.emptyTitle}>{t("NO_DHIKR")}</Text>
+            <Text style={styles.emptySubtitle}>{t("NO_DHIKR_DESC")}</Text>
+          </View>
         ) : (
           <FlatList
             data={favorite}
@@ -61,6 +70,8 @@ const FavoriteScreen = () => {
               />
             )}
             keyExtractor={(item) => item.id.toString()}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.listContainer}
           />
         )}
       </View>
@@ -82,3 +93,47 @@ const FavoriteScreen = () => {
 };
 
 export default FavoriteScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: "relative",
+  },
+  bodyContainer: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  listContainer: {
+    paddingVertical: 16,
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 40,
+  },
+  emptyIcon: {
+    fontSize: 64,
+    marginBottom: 16,
+  },
+  emptyTitle: {
+    fontSize: 24,
+    fontWeight: "700",
+    fontFamily: "OpenSans",
+    color: "#fff",
+    textAlign: "center",
+    marginBottom: 8,
+  },
+  emptySubtitle: {
+    fontSize: 16,
+    fontWeight: "400",
+    fontFamily: "OpenSans",
+    color: "rgba(255, 255, 255, 0.7)",
+    textAlign: "center",
+    lineHeight: 24,
+  },
+  bottomContainer: {
+    width: "100%",
+    height: "10%",
+  },
+});

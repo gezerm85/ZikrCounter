@@ -1,7 +1,7 @@
 import { StyleSheet,Pressable } from "react-native";
 import React from "react";
 import { useSelector } from "react-redux";
-import { setTheme } from "../../utils/Theme/Theme";
+import { fixedColors } from "../../utils/Theme/VectorTheme";
 import { useTranslation } from "react-i18next";
 
 
@@ -16,8 +16,8 @@ const CustomButton = ({ onPress }) => {
       style={({ pressed }) => [
         {
           backgroundColor: pressed
-            ? setTheme[currentIndex].main
-            : setTheme[currentIndex].main,
+            ? '#ccc'
+            : '#ffff',
           height: 155,
           width: 155,
           borderRadius: 600,

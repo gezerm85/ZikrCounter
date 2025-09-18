@@ -1,20 +1,15 @@
-import { Pressable, View, Vibration, StatusBar, Image } from "react-native";
+import { View, StatusBar, StyleSheet, Dimensions, Text } from "react-native";
 import React, { useState } from "react";
 import ZikirCounter from "../../components/ZikirCounter/ZikirCounter";
-import { useSelector, useDispatch } from "react-redux";
-import * as Speech from "expo-speech";
-import { changeGradientColor } from "../../redux/CounterSlice";
-import SettingsModal from "../../components/SettingsModal/SettingsModal";
-import { useNavigation } from "@react-navigation/native";
-import { setTheme } from "../../utils/Theme/Theme";
-import styles from "./HomeScreen.style";
+import { useSelector } from "react-redux";
+import { fixedColors } from "../../utils/Theme/VectorTheme";
 import AdBanner from "../../components/AdBanner/AdBanner";
 import InterstitialAd from "../../components/InterstitialAd/InterstitialAd";
-import { img } from "../../utils/img/img";
 import { useTranslation } from "react-i18next";
 
+const { width } = Dimensions.get("window");
+
 const HomeScreen = () => {
-  const [isSettingsModal, setIsSettingsModal] = useState(false);
   const [clickCounts, setClickCounts] = useState({
     button: 0,
     button1: 0,
@@ -44,129 +39,25 @@ const HomeScreen = () => {
     setClickCounts((prevCounts) => ({ ...prevCounts, [buttonKey]: 0 }));
   };
 
-  const dispatch = useDispatch();
-
-  const nav = useNavigation();
-
-  const { value, vibrationEnabled, currentIndex } = useSelector(
-    (state) => state.counter
-  );
-
-  const SettingsModalToggle = () => {
-    setIsSettingsModal(!isSettingsModal);
-    if (vibrationEnabled == true) {
-      Vibration.vibrate(25);
-    }
-  };
-
-  const OnPress = () => {
-    handleButtonClick("button1");
-    setIsSettingsModal(!isSettingsModal);
-    if (vibrationEnabled == true) {
-      Vibration.vibrate(25);
-    }
-  };
-
-  const speakNumber = () => {
-    handleButtonClick("button1");
-    if (vibrationEnabled == true) {
-      Vibration.vibrate(25);
-    }
-    const numberText = value.toString();
-    Speech.speak(numberText);
-  };
-
-  const handleChangeColor = () => {
-    handleButtonClick("button");
-    dispatch(changeGradientColor());
-    if (vibrationEnabled == true) {
-      Vibration.vibrate(25);
-    }
-  };
-
-  function handleNavigate() {
-    handleButtonClick("button2");
-    nav.navigate("FavoriteScreen");
-    if (vibrationEnabled == true) {
-      Vibration.vibrate(25);
-    }
-  }
-
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: setTheme[currentIndex].bgColor },
+        { backgroundColor: fixedColors.bgColor },
       ]}
       accessible={true}
       accessibilityLabel={"Home1"}
     >
       <StatusBar barStyle="default" />
 
-      <View style={styles.btnContainer}>
-        <Pressable
-          accessible={true}
-          accessibilityLabel={"SETTINGS1"}
-          style={[
-            styles.btnBox,
-            { backgroundColor: setTheme[currentIndex].cardColor },
-          ]}
-          onPress={OnPress}
-        >
-          <Image style={styles.img} source={img.Settings} />
-        </Pressable>
-        <Pressable
-          accessible={true}
-          accessibilityLabel={"Theme"}
-          style={[
-            styles.btnBox,
-            { backgroundColor: setTheme[currentIndex].cardColor },
-          ]}
-          onPress={handleChangeColor}
-        >
-          <Image style={styles.img} source={img.Paint} />
-        </Pressable>
-        <Pressable
-          accessible={true}
-          accessibilityLabel={t("COUNT")}
-          style={[
-            styles.btnBox,
-            { backgroundColor: setTheme[currentIndex].cardColor },
-          ]}
-          onPress={speakNumber}
-        >
-          <Image style={styles.img} source={img.Sound} />
-        </Pressable>
-        <Pressable
-          accessible={true}
-          accessibilityLabel={t("TITLE")}
-          style={[
-            styles.btnBox,
-            { backgroundColor: setTheme[currentIndex].cardColor },
-          ]}
-          onPress={handleNavigate}
-        >
-          <Image style={styles.img} source={img.Book} />
-        </Pressable>
-      </View>
       <View style={styles.bodyContainer}>
-        <ZikirCounter onButtonClick={(value) => handleButtonClick(value)} />
+        <ZikirCounter onButtonClick={handleButtonClick} />
       </View>
+
       <View style={styles.bottomContainer}>
-        <AdBanner />
+      <AdBanner />
       </View>
-      {isSettingsModal && (
-        <View
-          style={styles.modalOverlay}
-          accessible={true}
-          accessibilityLabel={"SETTINGS4"}
-        >
-          <SettingsModal
-            isVisible={isSettingsModal}
-            onClose={SettingsModalToggle}
-          />
-        </View>
-      )}
+
       {Object.keys(clickCounts).map((buttonKey) => (
         <InterstitialAd
           key={buttonKey}
@@ -180,3 +71,21 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: "relative",
+  },
+  bodyContainer: {
+    height: "90%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  bottomContainer: {
+    width: "100%",
+    height: 80, // Sabit yükseklik
+    minHeight: 80,
+  },
+});

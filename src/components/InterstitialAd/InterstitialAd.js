@@ -1,10 +1,14 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   InterstitialAd,
   AdEventType,
+  TestIds,
 } from "react-native-google-mobile-ads";
 
-const adUnitId = "ca-app-pub-9856483340336068/4545016838";
+// Environment-based reklam ID'si
+const adUnitId = __DEV__ 
+  ? TestIds.INTERSTITIAL 
+  : "YOUR_PRODUCTION_INTERSTITIAL_ID_HERE"; // Production Interstitial ID - Replace with your AdMob ID
 
 const interstitialAd = InterstitialAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
@@ -12,12 +16,14 @@ const interstitialAd = InterstitialAd.createForAdRequest(adUnitId, {
 
 const InterstitialAdComponent = ({ clickCount, onAdClosed, adCouner }) => {
   const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const unsubscribeLoaded = interstitialAd.addAdEventListener(
       AdEventType.LOADED,
       () => {
         setLoaded(true);
+        setError(false);
       }
     );
 
@@ -30,11 +36,21 @@ const InterstitialAdComponent = ({ clickCount, onAdClosed, adCouner }) => {
       }
     );
 
+    const unsubscribeError = interstitialAd.addAdEventListener(
+      AdEventType.ERROR,
+      (error) => {
+        console.log('Interstitial ad error:', error);
+        setError(true);
+        setLoaded(false);
+      }
+    );
+
     interstitialAd.load(); 
 
     return () => {
       unsubscribeLoaded();
       unsubscribeClosed();
+      unsubscribeError();
     };
   }, []);
 

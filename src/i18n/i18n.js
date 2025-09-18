@@ -6,12 +6,6 @@ import { getLocales } from "expo-localization";
 import tr from "../locales/tr.json";
 import en from "../locales/en.json";
 import ar from "../locales/ar.json";
-import bn from "../locales/bn.json";
-import fa from "../locales/fa.json";
-import id from "../locales/id.json";
-import ms from "../locales/ms.json";
-import sw from "../locales/sw.json";
-import ur from "../locales/ur.json";
 
 
 const resources = {
@@ -23,24 +17,6 @@ const resources = {
   },
   ar: {
     translation: ar,
-  },
-  bn: {
-    translation: bn,
-  },
-  fa: {
-    translation: fa,
-  },
-  id: {
-    translation: id,
-  },
-  ms: {
-    translation: ms,
-  },
-  sw: {
-    translation: sw,
-  },
-  ur: {
-    translation: ur,
   },
 };
 

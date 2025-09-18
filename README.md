@@ -2,10 +2,10 @@
 
 # 📿 ZikrCounter - Zikir Sayacı Uygulaması
 
-**React Native, Redux ve Expo ile Geliştirilmiş Modern Zikir Sayacı Mobil Uygulaması**
+**React Native, Redux ve Expo ile Geliştirilmiş Modern Zikir Sayacı ve Namaz Vakitleri Mobil Uygulaması**
 
-[![React Native](https://img.shields.io/badge/React_Native-0.74.5-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactnative.dev/)
-[![Expo](https://img.shields.io/badge/Expo-51.0.34-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
+[![React Native](https://img.shields.io/badge/React_Native-0.76.5-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactnative.dev/)
+[![Expo](https://img.shields.io/badge/Expo-54.0.8-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
 [![Redux](https://img.shields.io/badge/Redux_Toolkit-2.2.7-764ABC?style=for-the-badge&logo=redux&logoColor=white)](https://redux-toolkit.js.org/)
 [![React Native Paper](https://img.shields.io/badge/React_Native_Paper-5.12.5-6200EE?style=for-the-badge&logo=material-design&logoColor=white)](https://reactnativepaper.com/)
 
@@ -17,16 +17,21 @@
 
 ## 📖 Hakkında
 
-**ZikrCounter**, modern mobil teknolojiler kullanılarak geliştirilmiş kapsamlı bir zikir sayacı uygulamasıdır. React Native, Redux Toolkit ve Expo ile oluşturulmuş olup, kullanıcılara güvenli, hızlı ve kullanıcı dostu zikir sayma deneyimi sunmaktadır.
+**ZikrCounter**, modern mobil teknolojiler kullanılarak geliştirilmiş kapsamlı bir zikir sayacı ve namaz vakitleri uygulamasıdır. React Native, Redux Toolkit ve Expo ile oluşturulmuş olup, kullanıcılara güvenli, hızlı ve kullanıcı dostu zikir sayma ve namaz takibi deneyimi sunmaktadır.
 
 ### 🎯 Projenin Amacı
 
 - 📿 **Zikir Sayma** - Kolay ve hızlı zikir sayma sistemi
-- 🌍 **Çoklu Dil Desteği** - 9 farklı dil desteği
-- 🎨 **Özelleştirilebilir Tema** - Çoklu renk seçenekleri
+- 🕌 **Namaz Vakitleri** - 81 Türkiye şehrinde güncel namaz vakitleri
+- 📍 **Akıllı Konum** - Otomatik şehir algılama ve seçimi
+- 🔔 **Namaz Bildirimleri** - Her namazdan 10 dakika önce ve namaz vaktinde bildirim
+- ⏰ **Gerçek Zamanlı Geri Sayım** - Bir sonraki namaza kadar kalan süre
+- 🎨 **Tema Seçimi** - 21 farklı arka plan teması
+- 🌍 **Çoklu Dil Desteği** - Türkçe, İngilizce, Arapça
 - 🔊 **Ses Efektleri** - Zikir sayma ses efektleri
 - 📱 **Cross-Platform** - iOS ve Android uyumlu
 - 💾 **Veri Kalıcılığı** - AsyncStorage ile veri saklama
+- 🔄 **Arka Plan Çalışma** - Uygulama kapalıyken bile bildirimler
 
 ---
 
@@ -63,7 +68,19 @@ Uygulama şu anda geliştirme aşamasındadır. Demo linki yakında eklenecektir
    yarn install
    ```
 
-3. **Uygulamayı başlatın**
+3. **Konfigürasyon ayarlarını yapın**
+   ```bash
+   # app.json dosyasında aşağıdaki değerleri kendi bilgilerinizle değiştirin:
+   # - YOUR_ANDROID_APP_ID_HERE -> AdMob Android App ID
+   # - YOUR_IOS_APP_ID_HERE -> AdMob iOS App ID
+   # - YOUR_EAS_PROJECT_ID_HERE -> EAS Project ID
+   
+   # src/components/AdBanner/AdBanner.js ve src/components/InterstitialAd/InterstitialAd.js dosyalarında:
+   # - YOUR_PRODUCTION_BANNER_ID_HERE -> AdMob Banner Ad Unit ID
+   # - YOUR_PRODUCTION_INTERSTITIAL_ID_HERE -> AdMob Interstitial Ad Unit ID
+   ```
+
+4. **Uygulamayı başlatın**
    ```bash
    # Expo ile çalıştır
    npx expo start
@@ -100,10 +117,19 @@ npm run web
 
 ### 📿 Zikir Sayma Sistemi
 - [x] **Zikir Sayacı** - Dokunmatik zikir sayma
-- [x] **Ses Efektleri** - Zikir sayma ses efektleri
+- [x] **Ses Efektleri** - Zikir sayma ses efektleri (sadece ana buton)
 - [x] **Titreşim Desteği** - Zikir sayma titreşimi
 - [x] **Sıfırlama** - Zikir sayacını sıfırlama
 - [x] **Kaydetme** - Zikir sayısını kaydetme
+
+### 🕌 Namaz Vakitleri Sistemi
+- [x] **81 Şehir Desteği** - Türkiye'nin tüm illerinde namaz vakitleri
+- [x] **Akıllı Konum** - Otomatik şehir algılama ve seçimi
+- [x] **Gerçek Zamanlı Geri Sayım** - Bir sonraki namaza kadar kalan süre
+- [x] **Namaz Bildirimleri** - Her namazdan 10 dakika önce ve namaz vaktinde bildirim
+- [x] **Arka Plan Çalışma** - Uygulama kapalıyken bile bildirimler
+- [x] **Şehir Değiştirme** - Kolay şehir seçimi ve değiştirme
+- [x] **API Entegrasyonu** - Aladhan API ile güncel namaz vakitleri
 
 ### ❤️ Favori Sistemi
 - [x] **Favori Zikirler** - Zikir sayılarını favorilere ekleme
@@ -151,8 +177,8 @@ npm run web
 ## 🛠️ Teknolojiler
 
 ### Frontend Framework
-- **React Native** `0.74.5` - Cross-platform mobil uygulama
-- **Expo** `51.0.34` - Geliştirme ortamı ve build sistemi
+- **React Native** `0.76.5` - Cross-platform mobil uygulama
+- **Expo** `54.0.8` - Geliştirme ortamı ve build sistemi
 - **React Navigation** `6.x` - Navigasyon sistemi
 
 ### State Management
@@ -165,27 +191,32 @@ npm run web
 - **Custom Fonts** - Digital-7 ve OpenSans fontları
 
 ### Storage & Data
-- **AsyncStorage** `1.23.1` - Local data storage
+- **AsyncStorage** `2.2.0` - Local data storage
 - **Moment.js** `2.30.1` - Date/time manipulation
+- **Moment Timezone** `0.6.0` - Timezone support
+- **Axios** `1.12.2` - HTTP client
 
 ### Audio & Media
-- **Expo AV** `14.0.7` - Audio playback
-- **Expo Speech** `12.0.2` - Text-to-speech
+- **Expo Audio** `1.0.12` - Audio playback
+- **Expo Speech** `14.0.7` - Text-to-speech
+- **Expo Video** `3.0.11` - Video playback
 - **Custom Sound Effects** - Zikir sayma ses efektleri
 
 ### Internationalization
-- **i18next** `23.14.0` - Internationalization framework
+- **i18next** `25.5.2` - Internationalization framework
 - **react-i18next** `15.0.1` - React i18n integration
-- **Expo Localization** `15.0.3` - Device locale detection
+- **Expo Localization** `17.0.7` - Device locale detection
 
 ### Notifications & Ads
-- **Expo Notifications** `0.28.17` - Push notifications
-- **Google Mobile Ads** `14.2.2` - Advertisement integration
+- **Expo Notifications** `0.32.11` - Push notifications
+- **Google Mobile Ads** `15.7.0` - Advertisement integration
+- **Expo Task Manager** `14.0.7` - Background tasks
 
 ### Development Tools
-- **Expo Font** `12.0.10` - Custom font loading
-- **Expo Splash Screen** `0.27.6` - Splash screen management
-- **Expo Status Bar** `1.12.1` - Status bar management
+- **Expo Font** `14.0.8` - Custom font loading
+- **Expo Splash Screen** `31.0.10` - Splash screen management
+- **Expo Status Bar** `3.0.8` - Status bar management
+- **Expo Build Properties** `1.0.8` - Build configuration
 
 ---
 

@@ -2,7 +2,7 @@
   "expo": {
     "name": "ZikirMatik",
     "slug": "zikirmatik",
-    "version": "1.0.8",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,10 +20,14 @@
         "foregroundImage": "./src/assets/icon.png",
         "backgroundColor": "#1a1a1a"
       },
-      "versionCode": 9,
+      "versionCode": 11,
       "permissions": [
         "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.WAKE_LOCK",
+        "android.permission.VIBRATE",
+        "android.permission.USE_FULL_SCREEN_INTENT"
       ],
       "package": "com.zikirmatik.app.mobiflex"
     },
@@ -32,19 +36,13 @@
     },
     "plugins": [
       "expo-font",
-      [
-        "expo-av",
-        {
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
-        }
-      ],
-      [
-        "react-native-google-mobile-ads",
-        {
-          "androidAppId": "ca-app-pub-9856483340336068~6907821252",
-          "iosAppId": "ca-app-pub-xxxxxxxx~xxxxxxxx"
-        }
-      ],
+          [
+            "react-native-google-mobile-ads",
+            {
+              "androidAppId": "YOUR_ANDROID_APP_ID_HERE",
+              "iosAppId": "YOUR_IOS_APP_ID_HERE"
+            }
+          ],
       [
         "expo-build-properties",
         {
@@ -55,11 +53,19 @@
           }
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/icon.png",
+          "color": "#ffffff",
+          "defaultChannel": "default"
+        }
+      ]
     ],
     "extra": {
       "eas": {
-        "projectId": "0a846fe7-f176-4047-8640-e7bede7bf897"
+        "projectId": "YOUR_EAS_PROJECT_ID_HERE"
       }
     }
   }

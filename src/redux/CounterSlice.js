@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { setTheme } from "../utils/Theme/Theme";
+import { vectorThemes } from "../utils/Theme/VectorTheme";
 
 export const fetchStorage = createAsyncThunk(
   "storage/fetchStorage",
@@ -28,14 +28,7 @@ export const fetchCurrentIndex = createAsyncThunk(
     return data;
   }
 );
-export const fetchVibrationEnabled = createAsyncThunk(
-  "vibrationEnabled/fetchVibrationEnabled",
-  async () => {
-    const response = await AsyncStorage.getItem("vibrationEnabled");
-    const data = response ? JSON.parse(response) : true;
-    return data;
-  }
-);
+// Vibration removed - using default behavior
 export const fetchFontSize = createAsyncThunk(
   "FontSize/fetchFontSize",
   async () => {
@@ -45,14 +38,43 @@ export const fetchFontSize = createAsyncThunk(
   }
 );
 
+export const fetchSelectedCity = createAsyncThunk(
+  "city/fetchSelectedCity",
+  async () => {
+    const response = await AsyncStorage.getItem("selectedCity");
+    const data = response ? JSON.parse(response) : { id: 34, name: 'İstanbul', code: 'istanbul' };
+    return data;
+  }
+);
+
+export const fetchPrayerTimes = createAsyncThunk(
+  "prayerTimes/fetchPrayerTimes",
+  async (cityName = 'Istanbul') => {
+    const response = await fetch(
+      `https://api.aladhan.com/v1/timingsByCity?city=${cityName}&country=Turkey&method=13&timezonestring=Europe/Istanbul`
+    );
+    const data = await response.json();
+    if (data.code === 200) {
+      return data.data;
+    } else {
+      throw new Error('Prayer times could not be loaded');
+    }
+  }
+);
+
 const initialState = {
   value: 0,
   favorite: [],
   loading: false,
   error: null,
-  vibrationEnabled: true,
   currentIndex: 0,
   fontSize: 68,
+  selectedCity: { id: 34, name: 'İstanbul', code: 'istanbul' },
+  prayerTimes: null,
+  prayerTimesLoading: false,
+  prayerTimesError: null,
+  prayerNotifications: [],
+  notificationPermission: false,
 };
 
 export const counterSlice = createSlice({
@@ -90,20 +112,28 @@ export const counterSlice = createSlice({
       );
       AsyncStorage.setItem("favorites", JSON.stringify(state.favorite));
     },
-    setVibrationEnabled: (state) => {
-      state.vibrationEnabled = !state.vibrationEnabled;
-      AsyncStorage.setItem(
-        "vibrationEnabled",
-        JSON.stringify(state.vibrationEnabled)
-      );
-    },
+    // Vibration removed - using default behavior
     changeGradientColor: (state) => {
-      state.currentIndex = (state.currentIndex + 1) % setTheme.length;
+      state.currentIndex = (state.currentIndex + 1) % vectorThemes.length;
       AsyncStorage.setItem("currentIndex", JSON.stringify(state.currentIndex));
     },
     setFontSize: (state, action) => {
       state.fontSize = action.payload;
       AsyncStorage.setItem("fontSize", JSON.stringify(state.fontSize));
+    },
+    setCurrentIndex: (state, action) => {
+      state.currentIndex = action.payload;
+      AsyncStorage.setItem("currentIndex", JSON.stringify(state.currentIndex));
+    },
+    setSelectedCity: (state, action) => {
+      state.selectedCity = action.payload;
+      AsyncStorage.setItem("selectedCity", JSON.stringify(state.selectedCity));
+    },
+    setNotificationPermission: (state, action) => {
+      state.notificationPermission = action.payload;
+    },
+    setPrayerNotifications: (state, action) => {
+      state.prayerNotifications = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -133,11 +163,25 @@ export const counterSlice = createSlice({
       .addCase(fetchCurrentIndex.fulfilled, (state, action) => {
         state.currentIndex = action.payload;
       })
-      .addCase(fetchVibrationEnabled.fulfilled, (state, action) => {
-        state.vibrationEnabled = action.payload;
-      })
+      // Vibration removed - using default behavior
       .addCase(fetchFontSize.fulfilled, (state, action) => {
         state.fontSize = action.payload;
+      })
+      .addCase(fetchSelectedCity.fulfilled, (state, action) => {
+        state.selectedCity = action.payload;
+      })
+      .addCase(fetchPrayerTimes.pending, (state) => {
+        state.prayerTimesLoading = true;
+        state.prayerTimesError = null;
+      })
+      .addCase(fetchPrayerTimes.fulfilled, (state, action) => {
+        state.prayerTimesLoading = false;
+        state.prayerTimes = action.payload;
+        state.prayerTimesError = null;
+      })
+      .addCase(fetchPrayerTimes.rejected, (state, action) => {
+        state.prayerTimesLoading = false;
+        state.prayerTimesError = action.error.message;
       });
   },
 });
@@ -147,9 +191,12 @@ export const {
   reset,
   setFavorite,
   removeFavorite,
-  setVibrationEnabled,
   changeGradientColor,
   setFontSize,
+  setCurrentIndex,
+  setSelectedCity,
+  setNotificationPermission,
+  setPrayerNotifications,
   updateFavorite,
 } = counterSlice.actions;
 
