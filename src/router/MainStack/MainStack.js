@@ -7,6 +7,13 @@ import PrayerTimes from "../../pages/PrayerTimes/PrayerTimes";
 import CitySelection from "../../pages/CitySelection/CitySelection";
 import PrivacyPolicy from "../../pages/PrivacyPolicy/PrivacyPolicy";
 import TermsOfService from "../../pages/TermsOfService/TermsOfService";
+import QuranSurahListScreen from "../../pages/Quran/QuranSurahListScreen";
+import QuranReaderScreen from "../../pages/Quran/QuranReaderScreen";
+import HadithListScreen from "../../pages/Hadith/HadithListScreen";
+import HadithDetailScreen from "../../pages/Hadith/HadithDetailScreen";
+import SavedVersesScreen from "../../pages/Saved/SavedVersesScreen";
+import SavedHadithsScreen from "../../pages/Saved/SavedHadithsScreen";
+import SourcesScreen from "../../pages/Sources/SourcesScreen";
 import { fixedColors } from "../../utils/Theme/VectorTheme";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchPrayerTimes } from "../../redux/CounterSlice";
@@ -14,11 +21,13 @@ import * as Notifications from "expo-notifications";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import LeftArrow from "../../components/LeftArrow/LeftArrow";
+import { scheduleDailyVerseNotifications } from "../../services/DailyVerseNotificationService";
 
 const Stack = createStackNavigator();
 
 const MainStack = () => {
   const { currentIndex, value, selectedCity } = useSelector((state) => state.counter);
+  const contentLanguage = useSelector((state) => state.contentPrefs.contentLanguage);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { t } = useTranslation();
@@ -73,7 +82,10 @@ const MainStack = () => {
 
         // Günlük bildirimleri planla
         await scheduleDailyNotifications();
-        
+
+        // Günün Ayeti bildirimleri (mevcut bildirimleri iptal etmeden eklenir)
+        await scheduleDailyVerseNotifications(contentLanguage);
+
       } catch (error) {
         console.log("Bildirim başlatma hatası:", error);
       }
@@ -200,6 +212,15 @@ const MainStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
+
+      {/* Keşfet / Qur'an / Hadith — screens render their own in-page headers */}
+      <Stack.Screen options={{ headerShown: false }} name="QuranSurahList" component={QuranSurahListScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="QuranReader" component={QuranReaderScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="HadithList" component={HadithListScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="HadithDetail" component={HadithDetailScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="SavedVerses" component={SavedVersesScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="SavedHadiths" component={SavedHadithsScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="Sources" component={SourcesScreen} />
       <Stack.Screen
         options={{
           title: t("TITLE"),
@@ -240,53 +261,17 @@ const MainStack = () => {
         component={PrayerTimes}
       />
       <Stack.Screen
-        options={{
-          headerStyle: {
-            height: 80,
-            backgroundColor: "#302e2e",
-          },
-          title: t("PRIVACY_POLICY"),
-          headerTitleStyle: {
-            color: "#fff",
-          },
-          headerTitleAlign: "center",
-          headerLeft: () => <LeftArrow />,
-        }}
+        options={{ headerShown: false }}
         name="PrivacyPolicy"
         component={PrivacyPolicy}
       />
       <Stack.Screen
-        options={{
-          headerStyle: {
-            height: 80,
-            backgroundColor: fixedColors.header,
-          },
-          headerTitleStyle: {
-            color: "#fff",
-            fontWeight: "700",
-            fontSize: 20,
-            fontFamily: "OpenSans",
-          },
-          title: t("CITY_SELECTION"),
-          headerTitleAlign: "center",
-          headerLeft: () => <LeftArrow />,
-        }}
+        options={{ headerShown: false }}
         name="CitySelection"
         component={CitySelection}
       />
       <Stack.Screen
-        options={{
-          headerStyle: {
-            height: 80,
-            backgroundColor: "#302e2e",
-          },
-          headerTitleStyle: {
-            color: "#fff",
-          },
-          title: t("TERMS_OF_SERVICE"),
-          headerTitleAlign: "center",
-          headerLeft: () => <LeftArrow />,
-        }}
+        options={{ headerShown: false }}
         name="TermsOfService"
         component={TermsOfService}
       />

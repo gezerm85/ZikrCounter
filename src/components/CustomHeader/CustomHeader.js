@@ -1,38 +1,38 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { fixedColors } from '../../utils/Theme/VectorTheme';
+import { useExploreTheme } from '../../utils/Theme/ExploreTheme';
 
-const CustomHeader = ({ title, subtitle }) => {
+const CustomHeader = ({ title, subtitle, right }) => {
+  const { c, fonts } = useExploreTheme();
   return (
     <View style={styles.header}>
-      <Text style={styles.headerTitle}>{title}</Text>
-      {subtitle && (
-        <Text style={styles.headerSubtitle}>{subtitle}</Text>
-      )}
+      <View style={{ flex: 1 }}>
+        <Text style={[styles.headerTitle, { color: c.ink, fontFamily: fonts.display }]}>{title}</Text>
+        {subtitle ? (
+          <Text style={[styles.headerSubtitle, { color: c.muted, fontFamily: fonts.ui }]}>{subtitle}</Text>
+        ) : null}
+      </View>
+      {right}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   header: {
-    paddingHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 24,
     paddingTop: 30,
     paddingBottom: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    backdropFilter: 'blur(10px)',
   },
   headerTitle: {
     fontSize: 28,
     fontWeight: '700',
-    fontFamily: 'OpenSans',
-    color: '#fff',
     marginBottom: 4,
   },
   headerSubtitle: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: '400',
-    fontFamily: 'OpenSans',
-    color: 'rgba(255, 255, 255, 0.8)',
   },
 });
 

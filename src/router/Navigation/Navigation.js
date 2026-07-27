@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, createNavigationContainerRef } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import * as Notifications from "expo-notifications";
 import { useDispatch } from "react-redux";
 import {
   fetchStorage,
@@ -12,6 +13,8 @@ import {
   setNotificationPermission,
   setSelectedCity,
 } from "../../redux/CounterSlice";
+import { hydrateSavedContent } from "../../redux/SavedContentSlice";
+import { hydrateContentPrefs } from "../../redux/ContentPrefsSlice";
 import PrayerNotificationService from "../../services/PrayerNotificationService";
 import BackgroundTaskService from "../../services/BackgroundTaskService";
 import * as Location from 'expo-location';
@@ -19,6 +22,21 @@ import BottomTabs from "../BottomTabs/BottomTabs";
 import MainStack from "../MainStack/MainStack";
 
 const RootStack = createStackNavigator();
+export const navigationRef = createNavigationContainerRef();
+
+// Open the exact ayah when a "Verse of the Day" notification is tapped.
+const handleNotificationResponse = (response) => {
+  const data = response?.notification?.request?.content?.data;
+  if (data?.type === "daily_verse" && data.surahNumber) {
+    const go = () =>
+      navigationRef.navigate("MainStack", {
+        screen: "QuranReader",
+        params: { surahNumber: data.surahNumber, focusAyah: data.ayahNumber },
+      });
+    if (navigationRef.isReady()) go();
+    else setTimeout(go, 800);
+  }
+};
 
 // Konum tespit fonksiyonu
 const findNearestCity = (lat, lng) => {
@@ -136,6 +154,8 @@ const Navigation = () => {
         dispatch(fetchFavorites());
         dispatch(fetchCurrentIndex());
         dispatch(fetchFontSize());
+        dispatch(hydrateSavedContent());
+        dispatch(hydrateContentPrefs());
         
         // Bildirim izni iste
         const hasPermission = await PrayerNotificationService.requestPermissions();
@@ -194,8 +214,21 @@ const Navigation = () => {
     initializeApp();
   }, [dispatch]);
 
+  // Deep-link: handle daily-verse notification taps (cold start + warm).
+  useEffect(() => {
+    let mounted = true;
+    Notifications.getLastNotificationResponseAsync().then((response) => {
+      if (mounted && response) handleNotificationResponse(response);
+    });
+    const sub = Notifications.addNotificationResponseReceivedListener(handleNotificationResponse);
+    return () => {
+      mounted = false;
+      sub.remove();
+    };
+  }, []);
+
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
         <RootStack.Screen name="BottomTabs" component={BottomTabs} />
         <RootStack.Screen name="MainStack" component={MainStack} />

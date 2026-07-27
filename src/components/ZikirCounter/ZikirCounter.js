@@ -1,67 +1,47 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Pressable,
-  Text,
-  ImageBackground,
-  StyleSheet,
-} from "react-native";
+import React, { useState } from "react";
+import { View, Pressable, Text, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { increment, reset } from "../../redux/CounterSlice";
-import { useAudioPlayer } from 'expo-audio';
+import { useAudioPlayer } from "expo-audio";
+import Feather from "@expo/vector-icons/Feather";
 import CustomButton from "../CustomButton/CustomButton";
 import CustomModal from "../CustomModal/CustomModal";
-import { vectorThemes, fixedColors } from "../../utils/Theme/VectorTheme";
-import { useTranslation } from "react-i18next";
 import CustomAlert from "../CustomAlert/CustomAlert";
+import { useExploreTheme } from "../../utils/Theme/ExploreTheme";
+import { useTranslation } from "react-i18next";
+
+const TARGET = 33;
 
 const ZikirCounterSkeleton = ({ onButtonClick }) => {
   const { t } = useTranslation();
+  const { c, fonts } = useExploreTheme();
 
-  const handleButtonPress = (value) => {
-    onButtonClick(value);
-  };
-
-  const { value, currentIndex, fontSize } = useSelector(
-    (state) => state.counter
-  );
-
+  const { value, fontSize } = useSelector((state) => state.counter);
   const dispatch = useDispatch();
-  
-  // Audio player setup
-  const player = useAudioPlayer(require('../../assets/sound/click.mp3'));
-  
+
+  const player = useAudioPlayer(require("../../assets/sound/click.mp3"));
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
+  const handleButtonPress = (v) => onButtonClick(v);
+
   const handleSavePress = () => {
     handleButtonPress("button1");
-    if (value !== 0) {
-      setIsModalVisible(!isModalVisible);
-    }
+    if (value !== 0) setIsModalVisible(true);
   };
 
-  const handleClose = () => {
-    setModalVisible(false);
-  };
-
-  const toggleModal = () => {
-    setIsModalVisible(!isModalVisible);
-  };
-
-
+  const toggleModal = () => setIsModalVisible((v) => !v);
+  const handleClose = () => setModalVisible(false);
 
   const handleOnPress = async () => {
     handleButtonPress("button4");
-    
-    // Play click sound
     try {
       player.seekTo(0);
       player.play();
     } catch (error) {
-      console.log('Ses çalma hatası:', error);
+      console.log("Ses çalma hatası:", error);
     }
-    
     dispatch(increment());
   };
 
@@ -74,48 +54,73 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
 
   const handleResetPress = () => {
     handleButtonPress("button1");
-    if (value !== 0) {
-      setModalVisible(true);
-    }
+    if (value !== 0) setModalVisible(true);
   };
 
+  const laps = Math.floor(value / TARGET);
+  const inLap = value % TARGET;
+
   return (
-        <ImageBackground
-        accessible={true}
-        accessibilityLabel={"Home"}
-          imageStyle={styles.bgImg}
-          source={vectorThemes[currentIndex].img}
-          style={styles.container}
-        >
-      <View style={styles.bodyContainer}>
-        <View style={styles.screenContainer}>
-          <View style={styles.screen}>
-            <Text style={[styles.text, { fontSize: fontSize }]}>{value}</Text>
-          </View>
+    <View style={styles.wrap}>
+      {/* Brand */}
+      <View style={{ alignItems: "center", marginBottom: 22 }}>
+        <Text style={{ fontFamily: fonts.display, fontSize: 26, fontWeight: "700", color: c.ink }}>
+          {t("APP_NAME")}
+        </Text>
+        <Text style={{ fontFamily: fonts.ui, fontSize: 13, color: c.muted, marginTop: 2 }}>
+          Bismillâhirrahmânirrahîm
+        </Text>
+      </View>
+
+      {/* Device */}
+      <View
+        style={[
+          styles.device,
+          { backgroundColor: c.surface, borderColor: c.line, shadowColor: c.shadow },
+        ]}
+      >
+        {/* LCD screen */}
+        <View style={[styles.screen, { backgroundColor: c.screen }]}>
+          <Text style={[styles.ghost, { color: c.lcdInk }]}>88</Text>
+          <Text style={[styles.lcd, { color: c.lcdInk, fontSize: fontSize }]}>{value}</Text>
         </View>
-        <View style={styles.innerContainer}>
-          <View style={styles.btnBox}>
-            <Text style={styles.title}>{t("SAVE")}</Text>
+        {/* lap indicator */}
+        <View style={styles.lapRow}>
+          <Text style={{ fontFamily: fonts.mono, fontSize: 13, color: c.muted, letterSpacing: 1 }}>
+            TUR {laps} · {inLap} / {TARGET}
+          </Text>
+        </View>
+
+        {/* Save / Reset */}
+        <View style={styles.actionRow}>
+          <View style={{ alignItems: "center", gap: 6 }}>
             <Pressable
-              accessible={true}
+              accessible
               accessibilityLabel={"save"}
               onPress={handleSavePress}
-              style={styles.smallCircle}
-            />
+              style={({ pressed }) => [styles.roundBtn, { backgroundColor: c.goldSoft, opacity: pressed ? 0.7 : 1 }]}
+            >
+              <Feather name="bookmark" size={22} color={c.gold} />
+            </Pressable>
+            <Text style={{ fontFamily: fonts.ui, fontSize: 12, fontWeight: "600", color: c.inkSoft }}>{t("SAVE")}</Text>
           </View>
-          <View style={styles.btnBox}>
-            <Text style={styles.title}>{t("RESET")}</Text>
+          <View style={{ alignItems: "center", gap: 6 }}>
             <Pressable
-              accessible={true}
+              accessible
               accessibilityLabel={"Reset"}
               onPress={handleResetPress}
-              style={styles.smallCircle}
-            />
+              style={({ pressed }) => [styles.roundBtn, { backgroundColor: c.goldSoft, opacity: pressed ? 0.7 : 1 }]}
+            >
+              <Feather name="rotate-ccw" size={22} color={c.gold} />
+            </Pressable>
+            <Text style={{ fontFamily: fonts.ui, fontSize: 12, fontWeight: "600", color: c.inkSoft }}>{t("RESET")}</Text>
           </View>
         </View>
-        <View style={styles.btnContainer}>
-          <CustomButton onPress={handleOnPress} />
-        </View>
+      </View>
+
+      {/* ÇEK button */}
+      <View style={styles.bigBtnWrap}>
+        <CustomButton onPress={handleOnPress} />
       </View>
 
       {isModalVisible && (
@@ -125,97 +130,75 @@ const ZikirCounterSkeleton = ({ onButtonClick }) => {
       )}
       {modalVisible && (
         <View style={styles.modalOverlay}>
-          <CustomAlert
-            onClose={handleClose}
-            visible={modalVisible}
-            onConfirm={resetPress}
-          />
+          <CustomAlert onClose={handleClose} visible={modalVisible} onConfirm={resetPress} />
         </View>
       )}
-    </ImageBackground>
+    </View>
   );
 };
+
 export default ZikirCounterSkeleton;
 
 const styles = StyleSheet.create({
-  container: {
-    width: 350,
-    height: 450,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  bgImg: {
-    resizeMode: "contain",
-  },
-  title: {
-    color: "#fff",
-    fontWeight: "600",
-    fontSize: 15,
-    fontFamily: "OpenSans",
+  wrap: {
     width: "100%",
-    textAlign: "center",
-  },
-  bodyContainer: {
-    height: "85%",
-    width: "80%",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 24,
   },
-  screenContainer: {
+  device: {
     width: "100%",
-    height: "25%",
+    maxWidth: 360,
+    borderRadius: 28,
+    borderWidth: 1,
+    padding: 22,
     alignItems: "center",
-    justifyContent: "center",
-  },
-  innerContainer: {
-    flexDirection: "row",
-    width: "100%",
-    height: "25%",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 70,
-  },
-  btnContainer: {
-    width: "100%",
-    height: "50%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  btnBox: {
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 6,
-  },
-  btnText:{
-    backgroundColor: 'red',
-    fontSize: 22
-  },
-  bigCircle: {
-    height: 155,
-    width: 155,
-    borderRadius: 600,
-    backgroundColor: "#6D804C",
-  },
-  smallCircle: {
-    backgroundColor: "#fff",
-    height: 51,
-    width: 51,
-    borderRadius: 100,
+    shadowOpacity: 1,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 12 },
+    elevation: 4,
   },
   screen: {
-    backgroundColor: "#C3C3C3",
-    height: "80%",
-    width: "70%",
-    borderRadius: 16,
+    width: "100%",
+    height: 130,
+    borderRadius: 18,
     alignItems: "flex-end",
     justifyContent: "center",
+    paddingRight: 22,
+    overflow: "hidden",
   },
-  text: {
-    color: "#000",
-    height: "100%",
+  ghost: {
+    position: "absolute",
+    right: 22,
     fontFamily: "digital",
-    textAlignVertical: "center",
-    marginRight: 6,
+    fontSize: 84,
+    opacity: 0.12,
+  },
+  lcd: {
+    fontFamily: "digital",
+    includeFontPadding: false,
+  },
+  lapRow: {
+    marginTop: 14,
+    marginBottom: 4,
+  },
+  actionRow: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 64,
+    marginTop: 14,
+  },
+  roundBtn: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  bigBtnWrap: {
+    marginTop: 30,
+    alignItems: "center",
+    justifyContent: "center",
   },
   modalOverlay: {
     position: "absolute",

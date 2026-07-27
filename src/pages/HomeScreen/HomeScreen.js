@@ -1,15 +1,13 @@
-import { View, StatusBar, StyleSheet, Dimensions, Text } from "react-native";
+import { View, StatusBar, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import ZikirCounter from "../../components/ZikirCounter/ZikirCounter";
-import { useSelector } from "react-redux";
-import { fixedColors } from "../../utils/Theme/VectorTheme";
+import { useExploreTheme } from "../../utils/Theme/ExploreTheme";
 import AdBanner from "../../components/AdBanner/AdBanner";
 import InterstitialAd from "../../components/InterstitialAd/InterstitialAd";
-import { useTranslation } from "react-i18next";
-
-const { width } = Dimensions.get("window");
 
 const HomeScreen = () => {
+  const { c, mode } = useExploreTheme();
+
   const [clickCounts, setClickCounts] = useState({
     button: 0,
     button1: 0,
@@ -26,8 +24,6 @@ const HomeScreen = () => {
     button4: 100,
   };
 
-  const { t } = useTranslation();
-
   const handleButtonClick = (buttonKey) => {
     setClickCounts((prevCounts) => {
       const newCount = prevCounts[buttonKey] + 1;
@@ -41,21 +37,18 @@ const HomeScreen = () => {
 
   return (
     <View
-      style={[
-        styles.container,
-        { backgroundColor: fixedColors.bgColor },
-      ]}
+      style={[styles.container, { backgroundColor: c.bg }]}
       accessible={true}
       accessibilityLabel={"Home1"}
     >
-      <StatusBar barStyle="default" />
+      <StatusBar barStyle={mode === "dark" ? "light-content" : "dark-content"} />
 
       <View style={styles.bodyContainer}>
         <ZikirCounter onButtonClick={handleButtonClick} />
       </View>
 
       <View style={styles.bottomContainer}>
-      <AdBanner />
+        <AdBanner />
       </View>
 
       {Object.keys(clickCounts).map((buttonKey) => (
@@ -78,14 +71,14 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   bodyContainer: {
-    height: "90%",
+    flex: 1,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
   bottomContainer: {
     width: "100%",
-    height: 80, // Sabit yükseklik
+    height: 80,
     minHeight: 80,
   },
 });

@@ -1,9 +1,10 @@
 import { FlatList, Text, View, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import Feather from "@expo/vector-icons/Feather";
 import FavCard from "../../components/FavCard/FavCard";
 import "moment/locale/tr";
-import { fixedColors } from "../../utils/Theme/VectorTheme";
+import { useExploreTheme } from "../../utils/Theme/ExploreTheme";
 import InterstitialAd from "../../components/InterstitialAd/InterstitialAd";
 import { useTranslation } from "react-i18next";
 import AdBanner from "../../components/AdBanner/AdBanner";
@@ -11,6 +12,7 @@ import CustomHeader from "../../components/CustomHeader/CustomHeader";
 
 const FavoriteScreen = () => {
   const { t } = useTranslation();
+  const { c, fonts } = useExploreTheme();
 
   const { favorite } = useSelector((state) => state.counter);
 
@@ -21,12 +23,7 @@ const FavoriteScreen = () => {
     button4: 0,
   });
 
-  const thresholds = {
-    button1: 5,
-    button2: 10,
-    button3: 20,
-    button4: 30,
-  };
+  const thresholds = { button1: 5, button2: 10, button3: 20, button4: 30 };
 
   const handleButtonClick = (buttonKey) => {
     setClickCounts((prevCounts) => {
@@ -42,32 +39,23 @@ const FavoriteScreen = () => {
   return (
     <View
       accessible={true}
-      accessibilityLabel={t('TITLE')}
-      style={[
-        styles.container,
-        { backgroundColor: fixedColors.bgColor },
-      ]}
+      accessibilityLabel={t("TITLE")}
+      style={[styles.container, { backgroundColor: c.bg }]}
     >
-      <CustomHeader 
-        title={t("TITLE")} 
-        subtitle={`${favorite.length} ${t("SAVED_DHIKR")}`} 
-      />
+      <CustomHeader title={t("TITLE")} subtitle={`${favorite.length} ${t("SAVED_DHIKR")}`} />
 
       <View style={styles.bodyContainer}>
-        {favorite.length == 0 ? (
+        {favorite.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyIcon}>📝</Text>
-            <Text style={styles.emptyTitle}>{t("NO_DHIKR")}</Text>
-            <Text style={styles.emptySubtitle}>{t("NO_DHIKR_DESC")}</Text>
+            <Feather name="bookmark" size={44} color={c.muted} />
+            <Text style={[styles.emptyTitle, { color: c.ink, fontFamily: fonts.display }]}>{t("NO_DHIKR")}</Text>
+            <Text style={[styles.emptySubtitle, { color: c.muted, fontFamily: fonts.ui }]}>{t("NO_DHIKR_DESC")}</Text>
           </View>
         ) : (
           <FlatList
             data={favorite}
             renderItem={({ item }) => (
-              <FavCard
-                item={item}
-                handleButtonClick={(value) => handleButtonClick(value)}
-              />
+              <FavCard item={item} handleButtonClick={(value) => handleButtonClick(value)} />
             )}
             keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={false}
@@ -95,45 +83,11 @@ const FavoriteScreen = () => {
 export default FavoriteScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: "relative",
-  },
-  bodyContainer: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  listContainer: {
-    paddingVertical: 16,
-  },
-  emptyContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 40,
-  },
-  emptyIcon: {
-    fontSize: 64,
-    marginBottom: 16,
-  },
-  emptyTitle: {
-    fontSize: 24,
-    fontWeight: "700",
-    fontFamily: "OpenSans",
-    color: "#fff",
-    textAlign: "center",
-    marginBottom: 8,
-  },
-  emptySubtitle: {
-    fontSize: 16,
-    fontWeight: "400",
-    fontFamily: "OpenSans",
-    color: "rgba(255, 255, 255, 0.7)",
-    textAlign: "center",
-    lineHeight: 24,
-  },
-  bottomContainer: {
-    width: "100%",
-    height: "10%",
-  },
+  container: { flex: 1, position: "relative" },
+  bodyContainer: { flex: 1, paddingHorizontal: 20 },
+  listContainer: { paddingVertical: 12 },
+  emptyContainer: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 40 },
+  emptyTitle: { fontSize: 22, fontWeight: "700", textAlign: "center", marginTop: 16, marginBottom: 8 },
+  emptySubtitle: { fontSize: 15, fontWeight: "400", textAlign: "center", lineHeight: 22 },
+  bottomContainer: { width: "100%", height: 80 },
 });
